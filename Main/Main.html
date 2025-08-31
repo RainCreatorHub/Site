@@ -1,1 +1,120 @@
-<p>Discord: https://discord.gg/EmjkX7QpHM</p>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Site — Abas</title>
+  <link rel="stylesheet" href="Main.css" />
+</head>
+<body>
+<div class="panel" role="application" aria-label="Painel de abas">
+  <aside class="side" aria-label="Controles">
+    <div class="toggle-row">
+      <div>
+        <div class="title">Navegação</div>
+        <div class="muted">Selecione uma aba</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button id="collapseBtn" class="btn ghost" aria-expanded="true" title="Abrir/fechar lista de abas">Fechar</button>
+        <button id="newBtn" class="btn" title="Ação de exemplo">Novo</button>
+      </div>
+    </div>
+    <div id="tabsWrap" class="tabs-wrap" aria-hidden="false">
+      <nav class="tabs" role="tablist" aria-label="Lista de abas">
+        <button class="tab-btn active" role="tab" aria-selected="true" data-target="pane-1" id="tab-1">
+          <div class="tab-label">
+            <span class="tab-name">Visão geral</span>
+            <span class="tab-desc">Resumo e estatísticas</span>
+          </div>
+        </button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-target="pane-2" id="tab-2">
+          <div class="tab-label">
+            <span class="tab-name">Conteúdo</span>
+            <span class="tab-desc">Gerencie itens e páginas</span>
+          </div>
+        </button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-target="pane-3" id="tab-3">
+          <div class="tab-label">
+            <span class="tab-name">Configurações</span>
+            <span class="tab-desc">Preferências do site</span>
+          </div>
+        </button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-target="pane-4" id="tab-4">
+          <div class="tab-label">
+            <span class="tab-name">Ajuda</span>
+            <span class="tab-desc">Documentação e suporte</span>
+          </div>
+        </button>
+      </nav>
+    </div>
+    <div style="margin-top:12px" class="small">
+      Atalhos
+      <div class="chips" style="margin-top:8px">
+        <div class="chip">Ctrl + 1</div>
+        <div class="chip">Ctrl + 2</div>
+        <div class="chip">Ctrl + 3</div>
+      </div>
+    </div>
+  </aside>
+  <main class="content" id="mainContent" tabindex="0">
+    <div class="content-header">
+      <div>
+        <div style="font-weight:700; font-size:16px">Painel</div>
+        <div class="small">Informações relacionadas à aba selecionada</div>
+      </div>
+      <div>
+        <button id="actionTop" class="btn ghost">Ação rápida</button>
+      </div>
+    </div>
+    <section id="pane-1" class="pane" aria-hidden="false" role="tabpanel" aria-labelledby="tab-1">
+      <div class="card">
+        <h3 style="margin:0 0 8px 0">Visão geral</h3>
+        <p class="muted" style="margin:0 0 12px 0">Resumo das métricas mais importantes.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div style="flex:1;min-width:160px" class="card">
+            <div style="font-weight:700">Usuários</div>
+            <div class="muted">1.248 ativos</div>
+          </div>
+          <div style="flex:1;min-width:160px" class="card">
+            <div style="font-weight:700">Conteúdo</div>
+            <div class="muted">87 publicações</div>
+          </div>
+          <div style="flex:1;min-width:160px" class="card">
+            <div style="font-weight:700">Tráfego</div>
+            <div class="muted">12.4k visitas</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="pane-2" class="pane" aria-hidden="true" role="tabpanel" aria-labelledby="tab-2">
+      <div class="card">
+        <h3 style="margin:0 0 8px 0">Conteúdo</h3>
+        <p class="muted" style="margin:0 0 12px 0">Gerencie páginas e posts.</p>
+        <ul style="margin:0;padding-left:18px;color:var(--muted)">
+          <li>Sla!</li>
+        </ul>
+      </div>
+    </section>
+    <section id="pane-3" class="pane" aria-hidden="true" role="tabpanel" aria-labelledby="tab-3">
+      <div class="card">
+        <h3 style="margin:0 0 8px 0">Configurações</h3>
+        <p class="muted" style="margin:0 0 12px 0">Defina como o site deve se comportar.</p>
+        <label style="display:flex;gap:8px;align-items:center" class="small">
+          <input type="checkbox" id="darkToggle" /> Tema escuro automático
+        </label>
+      </div>
+    </section>
+    <section id="pane-4" class="pane" aria-hidden="true" role="tabpanel" aria-labelledby="tab-4">
+      <div class="card">
+        <h3 style="margin:0 0 8px 0">Ajuda</h3>
+        <p class="muted" style="margin:0 0 12px 0">Links e documentação.</p>
+        <ol style="color:var(--muted);padding-left:18px;margin:0">
+          <li>Sla</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="Main.js"></script>
+</body>
+</html>
