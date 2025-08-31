@@ -1,310 +1,347 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WindUI</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background-color: #0f172a;
             color: #e2e8f0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             line-height: 1.6;
+            padding: 0;
+            margin: 0;
         }
         
         .container {
-            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
         
+        /* Header */
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            margin-bottom: 30px;
+            background-color: #1e293b;
+            padding: 16px 0;
             border-bottom: 1px solid #334155;
         }
         
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
         .logo {
-            font-size: 2.2rem;
+            font-size: 24px;
             font-weight: 700;
-            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #60a5fa;
             display: flex;
             align-items: center;
         }
         
-        .logo i {
-            margin-right: 10px;
-            font-size: 2.4rem;
+        .logo span {
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         nav ul {
             display: flex;
             list-style: none;
-            gap: 25px;
+            gap: 32px;
         }
         
         nav a {
             color: #cbd5e1;
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
-            padding: 8px 0;
-            position: relative;
+            font-size: 16px;
+            transition: color 0.2s;
         }
         
         nav a:hover {
-            color: #3b82f6;
+            color: #60a5fa;
         }
         
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
             left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
-            transition: width 0.3s;
+            top: 0;
+            height: 100%;
+            width: 260px;
+            background-color: #1e293b;
+            padding: 100px 0 40px 0;
+            border-right: 1px solid #334155;
+            overflow-y: auto;
         }
         
-        nav a:hover::after {
-            width: 100%;
+        .sidebar-content {
+            padding: 0 24px;
         }
         
-        .hero {
-            text-align: center;
-            padding: 60px 20px;
-            margin-bottom: 50px;
+        .sidebar-section {
+            margin-bottom: 32px;
         }
         
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .hero p {
-            font-size: 1.3rem;
-            max-width: 700px;
-            margin: 0 auto 30px;
-            color: #94a3b8;
-        }
-        
-        .btn {
-            display: inline-block;
-            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
-            color: white;
-            padding: 12px 28px;
-            border-radius: 8px;
-            text-decoration: none;
+        .sidebar-title {
+            font-size: 14px;
             font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: none;
-            cursor: pointer;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
         }
         
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4);
+        .sidebar-links {
+            list-style: none;
         }
         
-        .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 2.2rem;
-            color: #e2e8f0;
-            position: relative;
-            padding-bottom: 15px;
+        .sidebar-links li {
+            margin-bottom: 12px;
         }
         
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+        .sidebar-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 15px;
+            display: block;
+            padding: 6px 0;
+            transition: color 0.2s;
         }
         
+        .sidebar-links a:hover {
+            color: #60a5fa;
+        }
+        
+        /* Main content */
+        main {
+            margin-left: 260px;
+            padding: 40px;
+        }
+        
+        .content-section {
+            margin-bottom: 48px;
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #f1f5f9;
+        }
+        
+        h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 32px 0 16px 0;
+            color: #f1f5f9;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #334155;
+        }
+        
+        p {
+            margin-bottom: 16px;
+            color: #94a3b8;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+        
+        .divider {
+            height: 1px;
+            background-color: #334155;
+            margin: 32px 0;
+        }
+        
+        /* Features grid */
         .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin: 32px 0;
         }
         
-        .feature-card {
-            background: #1e293b;
-            border-radius: 12px;
-            padding: 30px;
-            transition: transform 0.3s;
+        .feature {
+            background-color: #1e293b;
             border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 24px;
         }
         
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: #3b82f6;
-        }
-        
-        .feature-card i {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: #3b82f6;
-        }
-        
-        .feature-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 15px;
+        .feature h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
             color: #e2e8f0;
         }
         
-        .feature-card p {
-            color: #94a3b8;
+        .feature p {
+            margin-bottom: 0;
+            font-size: 15px;
         }
         
+        /* Beta notice */
         .beta-notice {
-            background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
-            border-radius: 12px;
-            padding: 30px;
-            margin: 60px 0;
-            text-align: center;
-            border-left: 4px solid #f59e0b;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px 0;
         }
         
         .beta-notice h3 {
+            font-size: 18px;
             color: #f59e0b;
-            margin-bottom: 15px;
-            font-size: 1.6rem;
+            margin-bottom: 12px;
         }
         
-        .beta-notice p {
-            color: #cbd5e1;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 60px;
-            border-top: 1px solid #334155;
-            color: #94a3b8;
-            width: 100%;
+        /* Responsive */
+        @media (max-width: 968px) {
+            .sidebar {
+                width: 220px;
+            }
+            
+            main {
+                margin-left: 220px;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
         }
         
         @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                text-align: center;
+            .sidebar {
+                display: none;
             }
             
-            .logo {
-                margin-bottom: 20px;
-            }
-            
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .hero p {
-                font-size: 1.1rem;
+            main {
+                margin-left: 0;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-wind"></i>
-                <span>WindUI</span>
-            </div>
+    <header>
+        <div class="container header-content">
+            <div class="logo">WindUI</div>
             <nav>
                 <ul>
                     <li><a href="#">Documentation</a></li>
-                    <li><a href="#">Why WindUI?</a></li>
-                    <li><a href="#">Elements</a></li>
                     <li><a href="#">Examples</a></li>
+                    <li><a href="#">GitHub</a></li>
                 </ul>
             </nav>
-        </header>
-        
-        <section class="hero">
-            <h1>Modern UI Components for Web Developers</h1>
-            <p>WindUI is a sleek, customizable component library designed to help you build beautiful interfaces faster.</p>
-            <a href="#" class="btn">Get Started</a>
-        </section>
-        
-        <h2 class="section-title">Why Choose WindUI?</h2>
-        
-        <section class="features">
-            <div class="feature-card">
-                <i class="fas fa-paint-brush"></i>
-                <h3>Modern Design</h3>
-                <p>Clean, contemporary components with attention to detail and aesthetics.</p>
+        </div>
+    </header>
+    
+    <div class="sidebar">
+        <div class="sidebar-content">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Documentation</div>
+                <ul class="sidebar-links">
+                    <li><a href="#">Introduction</a></li>
+                    <li><a href="#">About WindUI</a></li>
+                </ul>
             </div>
             
-            <div class="feature-card">
-                <i class="fas fa-sliders-h"></i>
-                <h3>Customizable</h3>
-                <p>Easily tailor components to match your brand with comprehensive customization options.</p>
+            <div class="sidebar-section">
+                <div class="sidebar-title">Setup</div>
+                <ul class="sidebar-links">
+                    <li><a href="#">Load WindUI</a></li>
+                </ul>
             </div>
             
-            <div class="feature-card">
-                <i class="fas fa-code-branch"></i>
-                <h3>Open Source</h3>
-                <p>Completely free to use and open for contributions from the developer community.</p>
+            <div class="sidebar-section">
+                <div class="sidebar-title">UI</div>
+                <ul class="sidebar-links">
+                    <li><a href="#">Window</a></li>
+                    <li><a href="#">Tab</a></li>
+                    <li><a href="#">Tab Section</a></li>
+                    <li><a href="#">Dialog</a></li>
+                    <li><a href="#">Popup</a></li>
+                    <li><a href="#">Tag</a></li>
+                    <li><a href="#">Notification</a></li>
+                </ul>
             </div>
             
-            <div class="feature-card">
-                <i class="fas fa-cubes"></i>
-                <h3>Many Elements</h3>
-                <p>Comprehensive collection of UI elements for all your web development needs.</p>
+            <div class="sidebar-section">
+                <div class="sidebar-title">Elements</div>
+                <ul class="sidebar-links">
+                    <li><a href="#">Button</a></li>
+                    <li><a href="#">Code</a></li>
+                    <li><a href="#">Colorpicker</a></li>
+                    <li><a href="#">Dropdown</a></li>
+                    <li><a href="#">Input</a></li>
+                </ul>
             </div>
-            
-            <div class="feature-card">
-                <i class="fas fa-key"></i>
-                <h3>Key System</h3>
-                <p>Secure access management with our built-in key and authentication system.</p>
-            </div>
-        </section>
-        
-        <section class="beta-notice">
-            <h3>WindUI is currently in Beta</h3>
-            <p>This project is still under active development. Bugs, issues, and unstable features may occur. We're constantly working on improvements, so please be patient and report any problems you encounter.</p>
-        </section>
+        </div>
     </div>
     
-    <footer>
-        <div class="container">
-            <p>© 2023 WindUI • Modern UI Component Library</p>
+    <main>
+        <div class="content-section">
+            <h1>About WindUI</h1>
+            
+            <h2>WindUI</h2>
+            <p>WindUI is a modern UI component library designed for web developers who want to build beautiful and functional user interfaces quickly.</p>
+            
+            <div class="divider"></div>
+            
+            <h2>Why choose WindUI?</h2>
+            <div class="features">
+                <div class="feature">
+                    <h3>Modern Design</h3>
+                    <p>Clean, contemporary components with attention to detail and aesthetics.</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>Customizable</h3>
+                    <p>Easily tailor components to match your brand with comprehensive customization options.</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>Open Source</h3>
+                    <p>Completely free to use and open for contributions from the developer community.</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>Many Elements</h3>
+                    <p>Comprehensive collection of UI elements for all your web development needs.</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>Key System</h3>
+                    <p>Secure access management with our built-in key and authentication system.</p>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="beta-notice">
+                <h3>WindUI is currently in Beta</h3>
+                <p>This project is still under active development. Bugs, issues, and unstable features may occur. We're constantly working on improvements, so please be patient and report any problems you encounter.</p>
+            </div>
         </div>
-    </footer>
+    </main>
+
+    <script>
+        // Simple script to handle sidebar link clicks
+        document.querySelectorAll('.sidebar-links a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.sidebar-links a').forEach(a => {
+                    a.style.color = '#cbd5e1';
+                });
+                this.style.color = '#60a5fa';
+            });
+        });
+    </script>
 </body>
 </html>
