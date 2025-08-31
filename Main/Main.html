@@ -1,121 +1,256 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Main</title>
-<style>
-body { margin: 0; font-family: Arial, sans-serif; }
-.hamburger {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  width: 30px;
-  height: 25px;
-  cursor: pointer;
-  z-index: 1001;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.hamburger div {
-  height: 4px;
-  background: #00aaff;
-  border-radius: 2px;
-}
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
-  display: none;
-  z-index: 1000;
-}
-.panel {
-  position: fixed;
-  top: 0;
-  right: -50%;
-  width: 50%;
-  height: 100%;
-  background: #f5f5f5;
-  box-shadow: -2px 0 5px rgba(0,0,0,0.3);
-  padding: 20px;
-  transition: right 0.3s;
-  overflow-y: auto;
-  z-index: 1002;
-}
-.panel.open { right: 0; }
-.tabs, .section-buttons { display: flex; gap: 10px; margin-bottom: 10px; }
-.tab-btn, .section-btn {
-  padding: 8px 16px;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  background: #ddd;
-}
-.tab-btn.active, .section-btn.active { background: #bbb; }
-.tab-content, .section-content { display: none; padding: 10px; border: 1px solid #ccc; background: white; }
-.tab-content.active, .section-content.active { display: block; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main - Site com Abas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin-top: 30px;
+        }
+        
+        header {
+            background: linear-gradient(to right, #2c3e50, #4ca1af);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .tabs-container {
+            display: flex;
+            background-color: #f1f1f1;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 500;
+            border-right: 1px solid #ddd;
+        }
+        
+        .tab:hover {
+            background-color: #ddd;
+        }
+        
+        .tab.active {
+            background-color: white;
+            border-bottom: 3px solid #4ca1af;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+            min-height: 300px;
+            animation: fadeIn 0.5s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .main-content {
+            line-height: 1.6;
+        }
+        
+        .main-content h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .main-content p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .toggle-btn {
+            background: linear-gradient(to right, #2c3e50, #4ca1af);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        footer {
+            margin-top: 30px;
+            color: white;
+            text-align: center;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 600px) {
+            .tabs-container {
+                flex-direction: column;
+            }
+            
+            .tab {
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<div class="hamburger" onclick="togglePanel()">
-  <div></div>
-  <div></div>
-  <div></div>
-</div>
-
-<div class="overlay" onclick="togglePanel()"></div>
-
-<div class="panel">
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="main">Main</button>
-  </div>
-
-  <div id="main" class="tab-content active">
-    <h2>Main</h2>
-    <div class="section-buttons">
-      <button class="section-btn active" data-section="noites">99 Noites na Floresta</button>
+    <div class="container">
+        <header>
+            <h1>Main</h1>
+            <p class="subtitle">Site com Sistema de Abas Interativo</p>
+        </header>
+        
+        <div class="tabs-container">
+            <div class="tab active" onclick="openTab('main')">Main</div>
+            <div class="tab" onclick="openTab('sobre')">Sobre</div>
+            <div class="tab" onclick="openTab('servicos')">Serviços</div>
+            <div class="tab" onclick="openTab('contato')">Contato</div>
+        </div>
+        
+        <div id="main" class="tab-content active">
+            <div class="main-content">
+                <h2>Bem-vindo à Aba Principal</h2>
+                <p>Este é o conteúdo da aba Main. Você pode abrir e fechar esta seção usando o botão abaixo.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eu ultricies lacinia, nunc nisl aliquam nisl, eu aliquam nisl nunc eu nisl.</p>
+                <p>Desenvolvido com HTML, CSS e JavaScript puro, este site demonstra um design responsivo e moderno com abas funcionais.</p>
+            </div>
+        </div>
+        
+        <div id="sobre" class="tab-content">
+            <div class="main-content">
+                <h2>Sobre Nós</h2>
+                <p>Somos uma empresa dedicada a fornecer soluções inovadoras para nossos clientes.</p>
+                <p>Nossa missão é criar experiências excepcionais que impulsionam o sucesso dos negócios.</p>
+            </div>
+        </div>
+        
+        <div id="servicos" class="tab-content">
+            <div class="main-content">
+                <h2>Nossos Serviços</h2>
+                <p>Oferecemos uma ampla gama de serviços para atender às suas necessidades:</p>
+                <ul>
+                    <li>Desenvolvimento Web</li>
+                    <li>Design Responsivo</li>
+                    <li>Consultoria em UX/UI</li>
+                    <li>Marketing Digital</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div id="contato" class="tab-content">
+            <div class="main-content">
+                <h2>Entre em Contato</h2>
+                <p>Telefone: (11) 9999-8888</p>
+                <p>Email: contato@main.com.br</p>
+                <p>Endereço: Rua Exemplo, 123 - São Paulo, SP</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; padding: 20px;">
+            <button class="toggle-btn" onclick="toggleMainTab()">Fechar Aba Main</button>
+        </div>
     </div>
-    <div id="noites" class="section-content active">
-      <p>URL: Nil</p>
-    </div>
-  </div>
-</div>
+    
+    <footer>
+        <p>© 2023 Main - Todos os direitos reservados</p>
+    </footer>
 
-<script>
-const panel = document.querySelector('.panel');
-const overlay = document.querySelector('.overlay');
-
-function togglePanel() {
-  panel.classList.toggle('open');
-  overlay.style.display = panel.classList.contains('open') ? 'block' : 'none';
-}
-
-const tabs = document.querySelectorAll('.tab-btn');
-const tabContents = document.querySelectorAll('.tab-content');
-tabs.forEach(btn => {
-  btn.addEventListener('click', () => {
-    tabs.forEach(b => b.classList.remove('active'));
-    tabContents.forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.tab).classList.add('active');
-  });
-});
-
-const sections = document.querySelectorAll('.section-btn');
-const sectionContents = document.querySelectorAll('.section-content');
-sections.forEach(btn => {
-  btn.addEventListener('click', () => {
-    sections.forEach(b => b.classList.remove('active'));
-    sectionContents.forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.section).classList.add('active');
-  });
-});
-</script>
-
+    <script>
+        function openTab(tabName) {
+            // Esconder todos os conteúdos de abas
+            var tabContents = document.getElementsByClassName("tab-content");
+            for (var i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+            
+            // Remover a classe active de todas as abas
+            var tabs = document.getElementsByClassName("tab");
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove("active");
+            }
+            
+            // Mostrar a aba selecionada e adicionar a classe active
+            document.getElementById(tabName).classList.add("active");
+            
+            // Encontrar a aba clicada e adicionar a classe active
+            event.currentTarget.classList.add("active");
+        }
+        
+        function toggleMainTab() {
+            var mainTab = document.getElementById("main");
+            var button = document.querySelector(".toggle-btn");
+            
+            if (mainTab.classList.contains("active")) {
+                mainTab.classList.remove("active");
+                button.textContent = "Abrir Aba Main";
+                
+                // Se a aba Main era a ativa, ativar a próxima aba (Sobre)
+                if (!document.querySelector(".tab-content.active")) {
+                    document.querySelector(".tab").classList.remove("active");
+                    document.querySelectorAll(".tab")[1].classList.add("active");
+                    document.getElementById("sobre").classList.add("active");
+                }
+            } else {
+                mainTab.classList.add("active");
+                button.textContent = "Fechar Aba Main";
+                
+                // Ativar a aba Main na navegação
+                var tabs = document.getElementsByClassName("tab");
+                for (var i = 0; i < tabs.length; i++) {
+                    tabs[i].classList.remove("active");
+                }
+                document.querySelector(".tab").classList.add("active");
+            }
+        }
+    </script>
 </body>
 </html>
