@@ -1,347 +1,347 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WindUI</title>
+    <title>Roblox | Hack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background-color: #0f172a;
-            color: #e2e8f0;
-            line-height: 1.6;
-            padding: 0;
-            margin: 0;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
         }
-        
+
         .container {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 0 20px;
         }
-        
-        /* Header */
+
         header {
-            background-color: #1e293b;
-            padding: 16px 0;
-            border-bottom: 1px solid #334155;
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
-        
-        .header-content {
+
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(to right, #ff8a00, #da1b60);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 1.2rem;
+        }
+
+        .section {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-header {
+            padding: 18px 20px;
+            background: rgba(0, 0, 0, 0.4);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
         }
-        
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: #60a5fa;
+
+        .section-header:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #ff8a00;
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .section-content.open {
+            max-height: 1000px;
+        }
+
+        .subsection {
+            padding: 15px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .subsection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 0;
+        }
+
+        .subsection-title {
+            font-size: 1.2rem;
+            color: #da1b60;
+        }
+
+        .subsection-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .subsection-content.open {
+            max-height: 500px;
+        }
+
+        .button-container {
+            padding: 15px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .button {
             display: flex;
             align-items: center;
-        }
-        
-        .logo span {
-            background: linear-gradient(90deg, #60a5fa, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 32px;
-        }
-        
-        nav a {
-            color: #cbd5e1;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            border-radius: 8px;
+            color: white;
             text-decoration: none;
             font-weight: 500;
-            font-size: 16px;
-            transition: color 0.2s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        
-        nav a:hover {
-            color: #60a5fa;
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 12px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to right, #2a5298, #3a62b8);
         }
-        
-        /* Sidebar */
-        .sidebar {
+
+        .sub-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            background: rgba(30, 60, 114, 0.7);
+            border-radius: 6px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sub-button:hover {
+            background: rgba(42, 82, 152, 0.8);
+        }
+
+        .icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .icon.open {
+            transform: rotate(180deg);
+        }
+
+        .key-text {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .toast {
             position: fixed;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 260px;
-            background-color: #1e293b;
-            padding: 100px 0 40px 0;
-            border-right: 1px solid #334155;
-            overflow-y: auto;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
         }
-        
-        .sidebar-content {
-            padding: 0 24px;
+
+        .toast.show {
+            opacity: 1;
         }
-        
-        .sidebar-section {
-            margin-bottom: 32px;
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #a0a0a0;
+            font-size: 0.9rem;
         }
-        
-        .sidebar-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 16px;
-        }
-        
-        .sidebar-links {
-            list-style: none;
-        }
-        
-        .sidebar-links li {
-            margin-bottom: 12px;
-        }
-        
-        .sidebar-links a {
-            color: #cbd5e1;
-            text-decoration: none;
-            font-size: 15px;
-            display: block;
-            padding: 6px 0;
-            transition: color 0.2s;
-        }
-        
-        .sidebar-links a:hover {
-            color: #60a5fa;
-        }
-        
-        /* Main content */
-        main {
-            margin-left: 260px;
-            padding: 40px;
-        }
-        
-        .content-section {
-            margin-bottom: 48px;
-        }
-        
-        h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: #f1f5f9;
-        }
-        
-        h2 {
-            font-size: 24px;
-            font-weight: 600;
-            margin: 32px 0 16px 0;
-            color: #f1f5f9;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #334155;
-        }
-        
-        p {
-            margin-bottom: 16px;
-            color: #94a3b8;
-            font-size: 16px;
-            line-height: 1.7;
-        }
-        
-        .divider {
-            height: 1px;
-            background-color: #334155;
-            margin: 32px 0;
-        }
-        
-        /* Features grid */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            margin: 32px 0;
-        }
-        
-        .feature {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 24px;
-        }
-        
-        .feature h3 {
-            font-size: 18px;
-            margin-bottom: 12px;
-            color: #e2e8f0;
-        }
-        
-        .feature p {
-            margin-bottom: 0;
-            font-size: 15px;
-        }
-        
-        /* Beta notice */
-        .beta-notice {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 24px;
-            margin: 32px 0;
-        }
-        
-        .beta-notice h3 {
-            font-size: 18px;
-            color: #f59e0b;
-            margin-bottom: 12px;
-        }
-        
-        /* Responsive */
-        @media (max-width: 968px) {
-            .sidebar {
-                width: 220px;
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.2rem;
             }
             
-            main {
-                margin-left: 220px;
+            .section-title {
+                font-size: 1.2rem;
             }
             
-            .features {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
+            .subsection-title {
+                font-size: 1.1rem;
             }
             
-            main {
-                margin-left: 0;
+            .button, .sub-button {
+                padding: 12px 15px;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container header-content">
-            <div class="logo">WindUI</div>
-            <nav>
-                <ul>
-                    <li><a href="#">Documentation</a></li>
-                    <li><a href="#">Examples</a></li>
-                    <li><a href="#">GitHub</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    
-    <div class="sidebar">
-        <div class="sidebar-content">
-            <div class="sidebar-section">
-                <div class="sidebar-title">Documentation</div>
-                <ul class="sidebar-links">
-                    <li><a href="#">Introduction</a></li>
-                    <li><a href="#">About WindUI</a></li>
-                </ul>
+    <div class="container">
+        <header>
+            <h1>Roblox | Hack</h1>
+            <p class="subtitle">Ferramentas e scripts para Roblox</p>
+        </header>
+
+        <main>
+            <div class="section">
+                <div class="section-header" onclick="toggleSection('main-scripts')">
+                    <div class="section-title">Main | Scripts</div>
+                    <div class="icon" id="main-scripts-icon"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="section-content" id="main-scripts">
+                    <div class="subsection">
+                        <div class="subsection-header" onclick="toggleSubSection('subsection-1')">
+                            <div class="subsection-title">99 noites na floresta</div>
+                            <div class="icon" id="subsection-1-icon"><i class="fas fa-chevron-down"></i></div>
+                        </div>
+                        <div class="subsection-content" id="subsection-1">
+                            <div class="button-container">
+                                <a href="https://github.com" class="button">
+                                    <span>H4x</span>
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <div class="sub-button" onclick="copyKey('nedScCjIXKMPvueWTpMVkPgdqbcxgQJL')">
+                                    <div>
+                                        <span class="key-text">Key: nedScCjIXKMPvueWTpMVkPgdqbcxgQJL</span>
+                                    </div>
+                                    <i class="far fa-copy"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <div class="sidebar-section">
-                <div class="sidebar-title">Setup</div>
-                <ul class="sidebar-links">
-                    <li><a href="#">Load WindUI</a></li>
-                </ul>
+
+            <div class="section">
+                <div class="section-header" onclick="toggleSection('main-executors')">
+                    <div class="section-title">Main | Executors</div>
+                    <div class="icon" id="main-executors-icon"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="section-content" id="main-executors">
+                    <div class="button-container">
+                        <a href="https://github.com" class="button">
+                            <span>Delta</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
-            
-            <div class="sidebar-section">
-                <div class="sidebar-title">UI</div>
-                <ul class="sidebar-links">
-                    <li><a href="#">Window</a></li>
-                    <li><a href="#">Tab</a></li>
-                    <li><a href="#">Tab Section</a></li>
-                    <li><a href="#">Dialog</a></li>
-                    <li><a href="#">Popup</a></li>
-                    <li><a href="#">Tag</a></li>
-                    <li><a href="#">Notification</a></li>
-                </ul>
-            </div>
-            
-            <div class="sidebar-section">
-                <div class="sidebar-title">Elements</div>
-                <ul class="sidebar-links">
-                    <li><a href="#">Button</a></li>
-                    <li><a href="#">Code</a></li>
-                    <li><a href="#">Colorpicker</a></li>
-                    <li><a href="#">Dropdown</a></li>
-                    <li><a href="#">Input</a></li>
-                </ul>
-            </div>
-        </div>
+        </main>
+
+        <footer>
+            <p>© 2025 Roblox | Hack - Todos os direitos reservados</p>
+        </footer>
     </div>
-    
-    <main>
-        <div class="content-section">
-            <h1>About WindUI</h1>
-            
-            <h2>WindUI</h2>
-            <p>WindUI is a modern UI component library designed for web developers who want to build beautiful and functional user interfaces quickly.</p>
-            
-            <div class="divider"></div>
-            
-            <h2>Why choose WindUI?</h2>
-            <div class="features">
-                <div class="feature">
-                    <h3>Modern Design</h3>
-                    <p>Clean, contemporary components with attention to detail and aesthetics.</p>
-                </div>
-                
-                <div class="feature">
-                    <h3>Customizable</h3>
-                    <p>Easily tailor components to match your brand with comprehensive customization options.</p>
-                </div>
-                
-                <div class="feature">
-                    <h3>Open Source</h3>
-                    <p>Completely free to use and open for contributions from the developer community.</p>
-                </div>
-                
-                <div class="feature">
-                    <h3>Many Elements</h3>
-                    <p>Comprehensive collection of UI elements for all your web development needs.</p>
-                </div>
-                
-                <div class="feature">
-                    <h3>Key System</h3>
-                    <p>Secure access management with our built-in key and authentication system.</p>
-                </div>
-            </div>
-            
-            <div class="divider"></div>
-            
-            <div class="beta-notice">
-                <h3>WindUI is currently in Beta</h3>
-                <p>This project is still under active development. Bugs, issues, and unstable features may occur. We're constantly working on improvements, so please be patient and report any problems you encounter.</p>
-            </div>
-        </div>
-    </main>
+
+    <div class="toast" id="toast">Chave copiada para a área de transferência!</div>
 
     <script>
-        // Simple script to handle sidebar link clicks
-        document.querySelectorAll('.sidebar-links a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelectorAll('.sidebar-links a').forEach(a => {
-                    a.style.color = '#cbd5e1';
-                });
-                this.style.color = '#60a5fa';
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            closeAllSections();
         });
+
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const icon = document.getElementById(sectionId + '-icon');
+            
+            section.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+
+        function toggleSubSection(subSectionId) {
+            const subSection = document.getElementById(subSectionId);
+            const icon = document.getElementById(subSectionId + '-icon');
+            
+            subSection.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+
+        function closeAllSections() {
+            const allSections = document.querySelectorAll('.section-content');
+            allSections.forEach(section => {
+                section.classList.remove('open');
+            });
+            
+            const allSubSections = document.querySelectorAll('.subsection-content');
+            allSubSections.forEach(subSection => {
+                subSection.classList.remove('open');
+            });
+            
+            const allIcons = document.querySelectorAll('.icon');
+            allIcons.forEach(icon => {
+                icon.classList.remove('open');
+            });
+        }
+
+        function copyKey(key) {
+            navigator.clipboard.writeText(key).then(() => {
+                showToast();
+            }).catch(err => {
+                const textArea = document.createElement('textarea');
+                textArea.value = key;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast();
+            });
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
     </script>
 </body>
-</html>
+    </html>
