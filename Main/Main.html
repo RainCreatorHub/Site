@@ -250,15 +250,60 @@
             line-height: 1.5;
         }
 
+        .code-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
         .code-block {
             background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
+            padding: 15px 50px 15px 15px;
             border-radius: 8px;
             font-family: 'Courier New', monospace;
             overflow-x: auto;
-            margin-bottom: 15px;
             line-height: 1.4;
             font-size: 0.95rem;
+            min-height: 60px;
+        }
+
+        .code-copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #2979ff;
+            border: none;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .code-copy-btn:hover {
+            background: #448aff;
+        }
+
+        .code-copy-btn.copied {
+            background: #4caf50;
+        }
+
+        .code-copy-btn .copy-icon, .code-copy-btn .check-icon {
+            font-size: 1rem;
+        }
+
+        .code-copy-btn .check-icon {
+            display: none;
+        }
+
+        .code-copy-btn.copied .copy-icon {
+            display: none;
+        }
+
+        .code-copy-btn.copied .check-icon {
+            display: inline;
         }
 
         .modal-key {
@@ -272,19 +317,48 @@
             font-size: 0.95rem;
         }
 
+        .key-content {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
         .copy-btn {
             background: #2979ff;
             border: none;
             color: white;
-            padding: 6px 12px;
+            padding: 6px 10px;
             border-radius: 4px;
             cursor: pointer;
-            transition: background 0.3s;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
         }
 
         .copy-btn:hover {
             background: #448aff;
+        }
+
+        .copy-btn.copied {
+            background: #4caf50;
+        }
+
+        .copy-btn .copy-icon, .copy-btn .check-icon {
+            font-size: 1rem;
+        }
+
+        .copy-btn .check-icon {
+            display: none;
+        }
+
+        .copy-btn.copied .copy-icon {
+            display: none;
+        }
+
+        .copy-btn.copied .check-icon {
+            display: inline;
         }
 
         footer {
@@ -324,6 +398,14 @@
             .code-block, .modal-key {
                 font-size: 0.85rem;
                 padding: 10px;
+            }
+            
+            .code-block {
+                padding-right: 45px;
+            }
+            
+            .code-copy-btn, .copy-btn {
+                padding: 5px 8px;
             }
         }
     </style>
@@ -380,7 +462,7 @@
         </footer>
     </div>
 
-    <div class="toast" id="toast">Chave copiada para a área de transferência!</div>
+    <div class="toast" id="toast">Copiado para a área de transferência!</div>
 
     <div class="modal" id="modal">
         <div class="modal-content">
@@ -390,12 +472,23 @@
             </div>
             <div class="modal-body">
                 <p class="modal-description">Script OP mas com key</p>
-                <div class="code-block">
-                    loadstring(game:HttpGet("https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua", true))()
+                <div class="code-container">
+                    <div class="code-block">
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua", true))()
+                    </div>
+                    <button class="code-copy-btn" id="copyCodeBtn" onclick="copyCode()">
+                        <i class="fas fa-copy copy-icon"></i>
+                        <i class="fas fa-check check-icon"></i>
+                    </button>
                 </div>
                 <div class="modal-key">
-                    <span>Key: nedScCjIXKMPvueWTpMVkPgdqbcxgQJL</span>
-                    <button class="copy-btn" onclick="copyKey('nedScCjIXKMPvueWTpMVkPgdqbcxgQJL')">Copiar</button>
+                    <div class="key-content">
+                        <span>Key: nedScCjIXKMPvueWTpMVkPgdqbcxgQJL</span>
+                    </div>
+                    <button class="copy-btn" id="copyKeyBtn" onclick="copyKey('nedScCjIXKMPvueWTpMVkPgdqbcxgQJL')">
+                        <i class="fas fa-copy copy-icon"></i>
+                        <i class="fas fa-check check-icon"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -439,9 +532,44 @@
             });
         }
 
+        function copyCode() {
+            const code = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua", true))()';
+            
+            navigator.clipboard.writeText(code).then(() => {
+                const copyBtn = document.getElementById('copyCodeBtn');
+                copyBtn.classList.add('copied');
+                showToast('Código copiado para a área de transferência!');
+                
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                const textArea = document.createElement('textarea');
+                textArea.value = code;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const copyBtn = document.getElementById('copyCodeBtn');
+                copyBtn.classList.add('copied');
+                showToast('Código copiado para a área de transferência!');
+                
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
         function copyKey(key) {
             navigator.clipboard.writeText(key).then(() => {
-                showToast();
+                const copyBtn = document.getElementById('copyKeyBtn');
+                copyBtn.classList.add('copied');
+                showToast('Chave copiada para a área de transferência!');
+                
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                }, 2000);
             }).catch(err => {
                 const textArea = document.createElement('textarea');
                 textArea.value = key;
@@ -449,12 +577,20 @@
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                showToast();
+                
+                const copyBtn = document.getElementById('copyKeyBtn');
+                copyBtn.classList.add('copied');
+                showToast('Chave copiada para a área de transferência!');
+                
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                }, 2000);
             });
         }
 
-        function showToast() {
+        function showToast(message) {
             const toast = document.getElementById('toast');
+            toast.textContent = message;
             toast.classList.add('show');
             
             setTimeout(() => {
@@ -465,6 +601,11 @@
         function openModal() {
             const modal = document.getElementById('modal');
             modal.style.display = 'flex';
+            
+            const copyCodeBtn = document.getElementById('copyCodeBtn');
+            const copyKeyBtn = document.getElementById('copyKeyBtn');
+            copyCodeBtn.classList.remove('copied');
+            copyKeyBtn.classList.remove('copied');
         }
 
         function closeModal() {
