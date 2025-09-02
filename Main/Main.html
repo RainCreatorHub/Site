@@ -431,8 +431,23 @@
                         </div>
                         <div class="subsection-content" id="subsection-1">
                             <div class="button-container">
-                                <div class="button" onclick="openModal()">
+                                <div class="button" onclick="openModal('h4x')">
                                     <span>H4x</span>
+                                    <i class="fas fa-code"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="subsection">
+                        <div class="subsection-header" onclick="toggleSubSection('subsection-2')">
+                            <div class="subsection-title">Roube um brainrot</div>
+                            <div class="icon" id="subsection-2-icon"><i class="fas fa-chevron-down"></i></div>
+                        </div>
+                        <div class="subsection-content" id="subsection-2">
+                            <div class="button-container">
+                                <div class="button" onclick="openModal('ugly')">
+                                    <span>Ugly</span>
                                     <i class="fas fa-code"></i>
                                 </div>
                             </div>
@@ -464,11 +479,11 @@
 
     <div class="toast" id="toast">Copiado para a área de transferência!</div>
 
-    <div class="modal" id="modal">
+    <div class="modal" id="modal-h4x">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">H4x</h2>
-                <span class="close" onclick="closeModal()">&times;</span>
+                <span class="close" onclick="closeModal('h4x')">&times;</span>
             </div>
             <div class="modal-body">
                 <p class="modal-description">Script OP mas com key</p>
@@ -476,7 +491,7 @@
                     <div class="code-block">
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua", true))()
                     </div>
-                    <button class="code-copy-btn" id="copyCodeBtn" onclick="copyCode()">
+                    <button class="code-copy-btn" id="copyCodeBtnH4x" onclick="copyCode('h4x')">
                         <i class="fas fa-copy copy-icon"></i>
                         <i class="fas fa-check check-icon"></i>
                     </button>
@@ -485,7 +500,28 @@
                     <div class="key-content">
                         <span>Key: nedScCjIXKMPvueWTpMVkPgdqbcxgQJL</span>
                     </div>
-                    <button class="copy-btn" id="copyKeyBtn" onclick="copyKey('nedScCjIXKMPvueWTpMVkPgdqbcxgQJL')">
+                    <button class="copy-btn" id="copyKeyBtnH4x" onclick="copyKey('nedScCjIXKMPvueWTpMVkPgdqbcxgQJL', 'h4x')">
+                        <i class="fas fa-copy copy-icon"></i>
+                        <i class="fas fa-check check-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-ugly">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Ugly</h2>
+                <span class="close" onclick="closeModal('ugly')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description">Script para Roube um brainrot</p>
+                <div class="code-container">
+                    <div class="code-block">
+                        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/883618684dd0e56f0271042ad9fa3485.lua"))()
+                    </div>
+                    <button class="code-copy-btn" id="copyCodeBtnUgly" onclick="copyCode('ugly')">
                         <i class="fas fa-copy copy-icon"></i>
                         <i class="fas fa-check check-icon"></i>
                     </button>
@@ -532,11 +568,16 @@
             });
         }
 
-        function copyCode() {
-            const code = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua", true))()';
+        function copyCode(modalType) {
+            let code;
+            if (modalType === 'h4x') {
+                code = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua", true))()';
+            } else if (modalType === 'ugly') {
+                code = 'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/883618684dd0e56f0271042ad9fa3485.lua"))()';
+            }
             
             navigator.clipboard.writeText(code).then(() => {
-                const copyBtn = document.getElementById('copyCodeBtn');
+                const copyBtn = document.getElementById('copyCodeBtn' + modalType.charAt(0).toUpperCase() + modalType.slice(1));
                 copyBtn.classList.add('copied');
                 showToast('Código copiado para a área de transferência!');
                 
@@ -551,7 +592,7 @@
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
                 
-                const copyBtn = document.getElementById('copyCodeBtn');
+                const copyBtn = document.getElementById('copyCodeBtn' + modalType.charAt(0).toUpperCase() + modalType.slice(1));
                 copyBtn.classList.add('copied');
                 showToast('Código copiado para a área de transferência!');
                 
@@ -561,9 +602,9 @@
             });
         }
 
-        function copyKey(key) {
+        function copyKey(key, modalType) {
             navigator.clipboard.writeText(key).then(() => {
-                const copyBtn = document.getElementById('copyKeyBtn');
+                const copyBtn = document.getElementById('copyKeyBtn' + modalType.charAt(0).toUpperCase() + modalType.slice(1));
                 copyBtn.classList.add('copied');
                 showToast('Chave copiada para a área de transferência!');
                 
@@ -578,7 +619,7 @@
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
                 
-                const copyBtn = document.getElementById('copyKeyBtn');
+                const copyBtn = document.getElementById('copyKeyBtn' + modalType.charAt(0).toUpperCase() + modalType.slice(1));
                 copyBtn.classList.add('copied');
                 showToast('Chave copiada para a área de transferência!');
                 
@@ -598,25 +639,32 @@
             }, 3000);
         }
 
-        function openModal() {
-            const modal = document.getElementById('modal');
+        function openModal(modalType) {
+            const modal = document.getElementById('modal-' + modalType);
             modal.style.display = 'flex';
             
-            const copyCodeBtn = document.getElementById('copyCodeBtn');
-            const copyKeyBtn = document.getElementById('copyKeyBtn');
-            copyCodeBtn.classList.remove('copied');
-            copyKeyBtn.classList.remove('copied');
+            if (modalType === 'h4x') {
+                const copyCodeBtn = document.getElementById('copyCodeBtnH4x');
+                const copyKeyBtn = document.getElementById('copyKeyBtnH4x');
+                copyCodeBtn.classList.remove('copied');
+                copyKeyBtn.classList.remove('copied');
+            } else if (modalType === 'ugly') {
+                const copyCodeBtn = document.getElementById('copyCodeBtnUgly');
+                copyCodeBtn.classList.remove('copied');
+            }
         }
 
-        function closeModal() {
-            const modal = document.getElementById('modal');
+        function closeModal(modalType) {
+            const modal = document.getElementById('modal-' + modalType);
             modal.style.display = 'none';
         }
 
         window.onclick = function(event) {
-            const modal = document.getElementById('modal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
+            if (event.target.classList.contains('modal')) {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    modal.style.display = 'none';
+                });
             }
         }
     </script>
