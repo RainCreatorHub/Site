@@ -342,6 +342,7 @@
         }
 
         .copy-btn.copied {
+            background:极
             background: #4caf50;
         }
 
@@ -468,6 +469,21 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="subsection">
+                        <div class="subsection-header" onclick="toggleSubSection('subsection-4')">
+                            <div class="subsection-title">Grow a garden</div>
+                            <div class="icon" id="subsection-4-icon"><i class="fas fa-chevron-down"></i></div>
+                        </div>
+                        <div class="subsection-content" id="subsection-4">
+                            <div class="button-container">
+                                <div class="button" onclick="openModal('speedhub')">
+                                    <span>Speed hub</span>
+                                    <i class="fas fa-code"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -548,7 +564,7 @@
     <div class="modal" id="modal-overgust">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Script overgust</h2>
+                <h2 class="modal-title">Overgust</h2>
                 <span class="close" onclick="closeModal('overgust')">&times;</span>
             </div>
             <div class="modal-body">
@@ -558,6 +574,28 @@
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/Overgustx2/Main/refs/heads/main/BloxFruits_25.html"))()
                     </div>
                     <button class="code-copy-btn" id="copyCodeBtnOvergust" onclick="copyCode('overgust')">
+                        <i class="fas fa-copy copy-icon"></i>
+                        <极
+                        <i class="fas fa-check check-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-speedhub">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Speed hub</h2>
+                <span class="close" onclick="closeModal('speedhub')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description">Sem key e OP ou com key.</p>
+                <div class="code-container">
+                    <div class="code-block">
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()
+                    </div>
+                    <button class="code-copy-btn" id="copyCodeBtnSpeedhub" onclick="copyCode('speedhub')">
                         <i class="fas fa-copy copy-icon"></i>
                         <i class="fas fa-check check-icon"></i>
                     </button>
@@ -612,6 +650,8 @@
                 code = 'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/883618684dd0e56f0271042ad9fa3485.lua"))()';
             } else if (modalType === 'overgust') {
                 code = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Overgustx2/Main/refs/heads/main/BloxFruits_25.html"))()';
+            } else if (modalType === 'speedhub') {
+                code = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()';
             }
             
             navigator.clipboard.writeText(code).then(() => {
@@ -691,6 +731,9 @@
                 copyCodeBtn.classList.remove('copied');
             } else if (modalType === 'overgust') {
                 const copyCodeBtn = document.getElementById('copyCodeBtnOvergust');
+                copyCodeBtn.classList.remove('copied');
+            } else if (modalType === 'speedhub') {
+                const copyCodeBtn = document.getElementById('copyCodeBtnSpeedhub');
                 copyCodeBtn.classList.remove('copied');
             }
         }
