@@ -1,16 +1,38 @@
 ---
-title: "Introdução"
+title: "Início"
+description: "Bem-vindo à documentação do projeto"
 ---
 
-# Bem-vindo à Documentação
+# Documentação do Meu Projeto
 
-Esta é a página inicial da sua documentação.
+Bem-vindo à documentação completa do projeto. Aqui você encontrará tudo que precisa para começar a usar nossa plataforma.
 
-## Comece aqui
+<div style={{backgroundColor: '#f0f9ff', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #0ea5e9', margin: '1.5rem 0'}}>
+✨ <strong>Novidade:</strong> Confira nosso novo guia de migração para a versão 2.0!
+</div>
 
-- [Primeiros Passos](/getting-started)
-- [Referência da API](/api)
+## Comece Aqui
 
-```js
-// Exemplo de código
-console.log('Olá Mundo!')
+- [Primeiros Passos](/getting-started) - Configure seu ambiente
+- [Guia de Uso](/usage) - Aprenda os conceitos principais
+- [Referência da API](/api) - Detalhes completos da API
+
+## Exemplo Rápido
+
+```typescript
+// Exemplo de uso básico
+import { init, createUser } from 'meu-projeto';
+
+// Inicializar
+const app = init({
+  apiKey: 'sua-chave-aqui',
+  environment: 'production'
+});
+
+// Criar usuário
+const user = await createUser({
+  name: 'João Silva',
+  email: 'joao@email.com'
+});
+
+console.log('Usuário criado:', user.id);
