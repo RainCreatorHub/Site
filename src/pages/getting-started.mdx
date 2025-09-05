@@ -1,15 +1,26 @@
-
-## 6. src/pages/getting-started.mdx
-```mdx
 ---
 title: "Primeiros Passos"
+description: "Guia de instalação e configuração inicial"
 ---
 
 # Primeiros Passos
 
-Aprenda a usar o sistema.
+Este guia vai ajudá-lo a configurar e executar o projeto pela primeira vez.
+
+## Pré-requisitos
+
+Antes de começar, certifique-se de ter:
+
+- [Node.js](https://nodejs.org/) 16.0 ou superior
+- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+- Um editor de código como [VS Code](https://code.visualstudio.com/)
 
 ## Instalação
 
+### Opção 1: Usando create-app (Recomendado)
+
 ```bash
-npm install meu-pacote
+npx create-meu-projeto@latest meu-projeto
+cd meu-projeto
+npm install
+npm run dev
