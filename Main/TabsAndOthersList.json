@@ -14,7 +14,7 @@
               "modalTitle": "H4x",
               "description": "Script OP mas com key",
               "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua\", true))()",
-              "key": "nedScCjIXKMPvueWTpMVkPgdqbcxgQJL"
+              "key": "Nada ainda."
             }
           ]
         },
@@ -56,7 +56,18 @@
               "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua\", true))()"
             }
           ]
-        }
+        },
+        {
+          "id": "subsection-3",
+          "title": "Nil",
+          "buttons": [
+            {
+              "label": "Nil Label",
+              "modalId": "Nil-Id",
+              "modalTitle": "Nil Title",
+              "description": "Nil desc",
+              "code": "Nil code"
+            }
       ]
     },
     {
