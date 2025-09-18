@@ -78,8 +78,10 @@
       "buttons": [
         {
           "label": "Delta",
-          "url": "https://www.mediafire.com/file/0p8f13im4k10hfi/Delta-2.687.816.apk/file"
-        }
+          "url": ""
+        },
+          "label": "Hello",
+          "url": ""
       ]
     }
   ]
