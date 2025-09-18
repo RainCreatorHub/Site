@@ -1,1 +1,73 @@
-
+{
+  "sections": [
+    {
+      "id": "main-scripts",
+      "title": "Main | Scripts",
+      "subsections": [
+        {
+          "id": "subsection-1",
+          "title": "99 noites na floresta",
+          "buttons": [
+            {
+              "label": "H4x",
+              "modalId": "h4x",
+              "modalTitle": "H4x",
+              "description": "Script OP mas com key",
+              "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua\", true))()",
+              "key": "nedScCjIXKMPvueWTpMVkPgdqbcxgQJL"
+            }
+          ]
+        },
+        {
+          "id": "subsection-2",
+          "title": "Roube um brainrot",
+          "buttons": [
+            {
+              "label": "Ugly",
+              "modalId": "ugly",
+              "modalTitle": "Ugly",
+              "description": "Script para Roube um brainrot",
+              "code": "loadstring(game:HttpGet(\"https://api.luarmor.net/files/v3/loaders/883618684dd0e56f0271042ad9fa3485.lua\"))()"
+            }
+          ]
+        },
+        {
+          "id": "subsection-3",
+          "title": "Blox fruits",
+          "buttons": [
+            {
+              "label": "Overgust",
+              "modalId": "overgust",
+              "modalTitle": "Overgust",
+              "description": "Script para Blox fruits",
+              "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Overgustx2/Main/refs/heads/main/BloxFruits_25.html\"))()"
+            }
+          ]
+        },
+        {
+          "id": "subsection-4",
+          "title": "Grow a garden",
+          "buttons": [
+            {
+              "label": "Speed hub",
+              "modalId": "speedhub",
+              "modalTitle": "Speed hub",
+              "description": "Sem key e OP ou com key.",
+              "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua\", true))()"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "main-executors",
+      "title": "Main | Executors",
+      "buttons": [
+        {
+          "label": "Delta",
+          "url": "https://www.mediafire.com/file/0p8f13im4k10hfi/Delta-2.687.816.apk/file"
+        }
+      ]
+    }
+  ]
+}
