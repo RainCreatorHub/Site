@@ -26,13 +26,13 @@
       "subsections": [
         {
           "id": "subsection-1-my-scripts",
-          "title": "Nil",
+          "title": "Steal a brainrot",
           "buttons": [
             {
-              "label": "Ola",
-              "modalId": "Ola",
-              "modalTitle": "Oxi",
-              "description": "Bro?",
+              "label": "Plataform",
+              "modalId": "plataform-steal-a-brainrot-my-scripts",
+              "modalTitle": "Plataform",
+              "description": "Plataforma pro steal a brainrot ou outro jogo.",
               "code": "--[[\\n  Types: New | Beta | Old\\n]]\\n_G.Type = \"\"\\nif _G.Type == \"New\" then\\nloadstring(game:HttpGet(\"https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform%20New.lua\"))()\\nelseif _G.Type == \"Beta\" then\\nloadstring(game:HttpGet(\"https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform%20Beta.lua\"))()\\nelseif _G.Type == \"Old\" then\\nloadstring(game:HttpGet(\"https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform%20Old.lua\"))()\\nelse\\nloadstring(game:HttpGet(\"https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform.lua\"))()\\nend",
               "key": "Não sei."
             }
