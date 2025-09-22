@@ -33,7 +33,7 @@
               "modalId": "Ola",
               "modalTitle": "Oxi",
               "description": "Bro?",
-              "code": "print('Meh')",
+              "code": "--[[\\n  Types: New | Beta | Old\\n]]\\n_G.Type = \"\"\\nif _G.Type == \"New\" then\\nloadstring(game:HttpGet(\"https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform%20New.lua\"))()\\nelseif _G.Type == \"Beta\" then\\nloadstring(game:HttpGet(\"https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform%20Beta.lua\"))()\\nelseif _G.Type == \"Old\" then\\nloadstring(game:HttpGet(\"https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform%20Old.lua\"))()\\nelse\\nloadstring(game:HttpGet(\"https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform.lua\"))()\\nend",
               "key": "Não sei."
             }
           ]
