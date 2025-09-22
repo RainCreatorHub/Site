@@ -121,7 +121,7 @@
             gap: 15px;
         }
 
-        .button {
+        .button, .external-link {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -136,7 +136,7 @@
             cursor: pointer;
         }
 
-        .button:hover {
+        .button:hover, .external-link:hover {
             transform: translateY(-3px);
             box-shadow: 0 7px 12px rgba(0, 0, 0, 0.2);
             background: linear-gradient(to right, #2979ff, #448aff);
@@ -342,7 +342,6 @@
         }
 
         .copy-btn.copied {
-            background:极
             background: #4caf50;
         }
 
@@ -383,7 +382,7 @@
                 font-size: 1.1rem;
             }
             
-            .button, .sub-button {
+            .button, .sub-button, .external-link {
                 padding: 12px 15px;
                 font-size: 0.9rem;
             }
@@ -418,89 +417,9 @@
             <p class="subtitle">Ferramentas e scripts para Roblox</p>
         </header>
 
-        <main>
-            <div class="section">
-                <div class="section-header" onclick="toggleSection('main-scripts')">
-                    <div class="section-title">Main | Scripts</div>
-                    <div class="icon" id="main-scripts-icon"><i class="fas fa-chevron-down"></i></div>
-                </div>
-                <div class="section-content" id="main-scripts">
-                    <div class="subsection">
-                        <div class="subsection-header" onclick="toggleSubSection('subsection-1')">
-                            <div class="subsection-title">99 noites na floresta</div>
-                            <div class="icon" id="subsection-1-icon"><i class="fas fa-chevron-down"></i></div>
-                        </div>
-                        <div class="subsection-content" id="subsection-1">
-                            <div class="button-container">
-                                <div class="button" onclick="openModal('h4x')">
-                                    <span>H4x</span>
-                                    <i class="fas fa-code"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="subsection">
-                        <div class="subsection-header" onclick="toggleSubSection('subsection-2')">
-                            <div class="subsection-title">Roube um brainrot</div>
-                            <div class="icon" id="subsection-2-icon"><i class="fas fa-chevron-down"></i></div>
-                        </div>
-                        <div class="subsection-content" id="subsection-2">
-                            <div class="button-container">
-                                <div class="button" onclick="openModal('ugly')">
-                                    <span>Ugly</span>
-                                    <i class="fas fa-code"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="subsection">
-                        <div class="subsection-header" onclick="toggleSubSection('subsection-3')">
-                            <div class="subsection-title">Blox fruits</div>
-                            <div class="icon" id="subsection-3-icon"><i class="fas fa-chevron-down"></i></div>
-                        </div>
-                        <div class="subsection-content" id="subsection-3">
-                            <div class="button-container">
-                                <div class="button" onclick="openModal('overgust')">
-                                    <span>Overgust</span>
-                                    <i class="fas fa-code"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="subsection">
-                        <div class="subsection-header" onclick="toggleSubSection('subsection-4')">
-                            <div class="subsection-title">Grow a garden</div>
-                            <div class="icon" id="subsection-4-icon"><i class="fas fa-chevron-down"></i></div>
-                        </div>
-                        <div class="subsection-content" id="subsection-4">
-                            <div class="button-container">
-                                <div class="button" onclick="openModal('speedhub')">
-                                    <span>Speed hub</span>
-                                    <i class="fas fa-code"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="section-header" onclick="toggleSection('main-executors')">
-                    <div class="section-title">Main | Executors</div>
-                    <div class="icon" id="main-executors-icon"><i class="fas fa-chevron-down"></i></div>
-                </div>
-                <div class="section-content" id="main-executors">
-                    <div class="button-container">
-                        <a href="https://www.mediafire.com/file/0p8f13im4k10hfi/Delta-2.687.816.apk/file" class="button">
-                            <span>Delta</span>
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <main id="dynamic-content">
+            <!-- Todo o conteúdo será injetado aqui via JavaScript -->
+            <p style="text-align: center; padding: 20px;">Carregando...</p>
         </main>
 
         <footer>
@@ -510,104 +429,179 @@
 
     <div class="toast" id="toast">Copiado para a área de transferência!</div>
 
-    <div class="modal" id="modal-h4x">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">H4x</h2>
-                <span class="close" onclick="closeModal('h4x')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p class="modal-description">Script OP mas com key</p>
-                <div class="code-container">
-                    <div class="code-block">
-                        loadstring(game:HttpGet("https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua", true))()
-                    </div>
-                    <button class="code-copy-btn" id="copyCodeBtnH4x" onclick="copyCode('h4x')">
-                        <i class="fas fa-copy copy-icon"></i>
-                        <i class="fas fa-check check-icon"></i>
-                    </button>
-                </div>
-                <div class="modal-key">
-                    <div class="key-content">
-                        <span>Key: nedScCjIXKMPvueWTpMVkPgdqbcxgQJL</span>
-                    </div>
-                    <button class="copy-btn" id="copyKeyBtnH4x" onclick="copyKey('nedScCjIXKMPvueWTpMVkPgdqbcxgQJL', 'h4x')">
-                        <i class="fas fa-copy copy-icon"></i>
-                        <i class="fas fa-check check-icon"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="modal-ugly">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Ugly</h2>
-                <span class="close" onclick="closeModal('ugly')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p class="modal-description">Script para Roube um brainrot</p>
-                <div class="code-container">
-                    <div class="code-block">
-                        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/883618684dd0e56f0271042ad9fa3485.lua"))()
-                    </div>
-                    <button class="code-copy-btn" id="copyCodeBtnUgly" onclick="copyCode('ugly')">
-                        <i class="fas fa-copy copy-icon"></i>
-                        <i class="fas fa-check check-icon"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="modal-overgust">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Overgust</h2>
-                <span class="close" onclick="closeModal('overgust')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p class="modal-description">Script para Blox fruits</p>
-                <div class="code-container">
-                    <div class="code-block">
-                        loadstring(game:HttpGet("https://raw.githubusercontent.com/Overgustx2/Main/refs/heads/main/BloxFruits_25.html"))()
-                    </div>
-                    <button class="code-copy-btn" id="copyCodeBtnOvergust" onclick="copyCode('overgust')">
-                        <i class="fas fa-copy copy-icon"></i>
-                        <极
-                        <i class="fas fa-check check-icon"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="modal-speedhub">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Speed hub</h2>
-                <span class="close" onclick="closeModal('speedhub')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p class="modal-description">Sem key e OP ou com key.</p>
-                <div class="code-container">
-                    <div class="code-block">
-                        loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()
-                    </div>
-                    <button class="code-copy-btn" id="copyCodeBtnSpeedhub" onclick="copyCode('speedhub')">
-                        <i class="fas fa-copy copy-icon"></i>
-                        <i class="fas fa-check check-icon"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Modais serão injetados aqui dinamicamente -->
+    <div id="modals-container"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            closeAllSections();
+            fetchAndRenderContent();
         });
+
+        async function fetchAndRenderContent() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/RainCreatorHub/Site/refs/heads/main/Main/TabsAndOthersList.json');
+                if (!response.ok) {
+                    throw new Error('Falha ao carregar o conteúdo.');
+                }
+                const data = await response.json();
+                renderContent(data);
+            } catch (error) {
+                document.getElementById('dynamic-content').innerHTML = `<p style="color: red; text-align: center;">Erro: ${error.message}</p>`;
+            }
+        }
+
+        function renderContent(data) {
+            const main = document.getElementById('dynamic-content');
+            const modalsContainer = document.getElementById('modals-container');
+            main.innerHTML = ''; // Limpa o placeholder "Carregando..."
+            modalsContainer.innerHTML = ''; // Limpa modais antigos
+
+            data.sections.forEach(section => {
+                const sectionElement = createSection(section);
+                main.appendChild(sectionElement);
+
+                // Se for uma seção com subseções, cria os modais para os botões
+                if (section.subsections) {
+                    section.subsections.forEach(subsection => {
+                        subsection.buttons.forEach(button => {
+                            if (button.modalId) {
+                                const modalElement = createModal(button);
+                                modalsContainer.appendChild(modalElement);
+                            }
+                        });
+                    });
+                }
+            });
+        }
+
+        function createSection(section) {
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'section';
+
+            const header = document.createElement('div');
+            header.className = 'section-header';
+            header.innerHTML = `
+                <div class="section-title">${section.title}</div>
+                <div class="icon" id="${section.id}-icon"><i class="fas fa-chevron-down"></i></div>
+            `;
+            header.onclick = () => toggleSection(section.id);
+
+            const content = document.createElement('div');
+            content.className = 'section-content';
+            content.id = section.id;
+
+            sectionDiv.appendChild(header);
+            sectionDiv.appendChild(content);
+
+            // Se for uma seção de executores (sem subseções)
+            if (section.buttons && section.buttons.length > 0) {
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'button-container';
+
+                section.buttons.forEach(button => {
+                    const buttonEl = document.createElement('a');
+                    buttonEl.href = button.url;
+                    buttonEl.className = 'external-link';
+                    buttonEl.target = '_blank';
+                    buttonEl.innerHTML = `
+                        <span>${button.label}</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    `;
+                    buttonContainer.appendChild(buttonEl);
+                });
+
+                content.appendChild(buttonContainer);
+            }
+            
+            if (section.subsections && section.subsections.length > 0) {
+                section.subsections.forEach(subsection => {
+                    const subsectionDiv = document.createElement('div');
+                    subsectionDiv.className = 'subsection';
+
+                    const subHeader = document.createElement('div');
+                    subHeader.className = 'subsection-header';
+                    subHeader.innerHTML = `
+                        <div class="subsection-title">${subsection.title}</div>
+                        <div class="icon" id="${subsection.id}-icon"><i class="fas fa-chevron-down"></i></div>
+                    `;
+                    subHeader.onclick = () => toggleSubSection(subsection.id);
+
+                    const subContent = document.createElement('div');
+                    subContent.className = 'subsection-content';
+                    subContent.id = subsection.id;
+
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.className = 'button-container';
+
+                    subsection.buttons.forEach(button => {
+                        const buttonEl = document.createElement('div');
+                        buttonEl.className = 'button';
+                        buttonEl.innerHTML = `
+                            <span>${button.label}</span>
+                            <i class="fas fa-code"></i>
+                        `;
+                        buttonEl.onclick = () => openModal(button.modalId);
+                        buttonContainer.appendChild(buttonEl);
+                    });
+
+                    subContent.appendChild(buttonContainer);
+                    subsectionDiv.appendChild(subHeader);
+                    subsectionDiv.appendChild(subContent);
+
+                    content.appendChild(subsectionDiv);
+                });
+            }
+
+            return sectionDiv;
+        }
+
+        function createModal(button) {
+            const modalDiv = document.createElement('div');
+            modalDiv.className = 'modal';
+            modalDiv.id = `modal-${button.modalId}`;
+
+            let modalContent = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">${button.modalTitle}</h2>
+                        <span class="close" onclick="closeModal('${button.modalId}')">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <p class="modal-description">${button.description}</p>
+                        <div class="code-container">
+                            <div class="code-block">${button.code}</div>
+                            <button class="code-copy-btn" id="copyCodeBtn${capitalizeFirstLetter(button.modalId)}" onclick="copyCode('${button.modalId}', \`${button.code}\`)">
+                                <i class="fas fa-copy copy-icon"></i>
+                                <i class="fas fa-check check-icon"></i>
+                            </button>
+                        </div>
+            `;
+            if (button.key) {
+                modalContent += `
+                        <div class="modal-key">
+                            <div class="key-content">
+                                <span>Key: ${button.key}</span>
+                            </div>
+                            <button class="copy-btn" id="copyKeyBtn${capitalizeFirstLetter(button.modalId)}" onclick="copyKey('${button.key}', '${button.modalId}')">
+                                <i class="fas fa-copy copy-icon"></i>
+                                <i class="fas fa-check check-icon"></i>
+                            </button>
+                        </div>
+                `;
+            }
+
+            modalContent += `
+                    </div>
+                </div>
+            `;
+
+            modalDiv.innerHTML = modalContent;
+            return modalDiv;
+        }
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
 
         function toggleSection(sectionId) {
             const section = document.getElementById(sectionId);
@@ -625,37 +619,9 @@
             icon.classList.toggle('open');
         }
 
-        function closeAllSections() {
-            const allSections = document.querySelectorAll('.section-content');
-            allSections.forEach(section => {
-                section.classList.remove('open');
-            });
-            
-            const allSubSections = document.querySelectorAll('.subsection-content');
-            allSubSections.forEach(subSection => {
-                subSection.classList.remove('open');
-            });
-            
-            const allIcons = document.querySelectorAll('.icon');
-            allIcons.forEach(icon => {
-                icon.classList.remove('open');
-            });
-        }
-
-        function copyCode(modalType) {
-            let code;
-            if (modalType === 'h4x') {
-                code = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua", true))()';
-            } else if (modalType === 'ugly') {
-                code = 'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/883618684dd0e56f0271042ad9fa3485.lua"))()';
-            } else if (modalType === 'overgust') {
-                code = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Overgustx2/Main/refs/heads/main/BloxFruits_25.html"))()';
-            } else if (modalType === 'speedhub') {
-                code = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()';
-            }
-            
+        function copyCode(modalId, code) {
             navigator.clipboard.writeText(code).then(() => {
-                const copyBtn = document.getElementById('copyCodeBtn' + modalType.charAt(0).toUpperCase() + modalType.slice(1));
+                const copyBtn = document.getElementById(`copyCodeBtn${capitalizeFirstLetter(modalId)}`);
                 copyBtn.classList.add('copied');
                 showToast('Código copiado para a área de transferência!');
                 
@@ -663,6 +629,7 @@
                     copyBtn.classList.remove('copied');
                 }, 2000);
             }).catch(err => {
+
                 const textArea = document.createElement('textarea');
                 textArea.value = code;
                 document.body.appendChild(textArea);
@@ -670,7 +637,7 @@
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
                 
-                const copyBtn = document.getElementById('copyCodeBtn' + modalType.charAt(0).toUpperCase() + modalType.slice(1));
+                const copyBtn = document.getElementById(`copyCodeBtn${capitalizeFirstLetter(modalId)}`);
                 copyBtn.classList.add('copied');
                 showToast('Código copiado para a área de transferência!');
                 
@@ -680,9 +647,9 @@
             });
         }
 
-        function copyKey(key, modalType) {
+        function copyKey(key, modalId) {
             navigator.clipboard.writeText(key).then(() => {
-                const copyBtn = document.getElementById('copyKeyBtn' + modalType.charAt(0).toUpperCase() + modalType.slice(1));
+                const copyBtn = document.getElementById(`copyKeyBtn${capitalizeFirstLetter(modalId)}`);
                 copyBtn.classList.add('copied');
                 showToast('Chave copiada para a área de transferência!');
                 
@@ -697,7 +664,7 @@
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
                 
-                const copyBtn = document.getElementById('copyKeyBtn' + modalType.charAt(0).toUpperCase() + modalType.slice(1));
+                const copyBtn = document.getElementById(`copyKeyBtn${capitalizeFirstLetter(modalId)}`);
                 copyBtn.classList.add('copied');
                 showToast('Chave copiada para a área de transferência!');
                 
@@ -717,29 +684,19 @@
             }, 3000);
         }
 
-        function openModal(modalType) {
-            const modal = document.getElementById('modal-' + modalType);
+        function openModal(modalId) {
+            const modal = document.getElementById(`modal-${modalId}`);
             modal.style.display = 'flex';
             
-            if (modalType === 'h4x') {
-                const copyCodeBtn = document.getElementById('copyCodeBtnH4x');
-                const copyKeyBtn = document.getElementById('copyKeyBtnH4x');
-                copyCodeBtn.classList.remove('copied');
-                copyKeyBtn.classList.remove('copied');
-            } else if (modalType === 'ugly') {
-                const copyCodeBtn = document.getElementById('copyCodeBtnUgly');
-                copyCodeBtn.classList.remove('copied');
-            } else if (modalType === 'overgust') {
-                const copyCodeBtn = document.getElementById('copyCodeBtnOvergust');
-                copyCodeBtn.classList.remove('copied');
-            } else if (modalType === 'speedhub') {
-                const copyCodeBtn = document.getElementById('copyCodeBtnSpeedhub');
-                copyCodeBtn.classList.remove('copied');
-            }
+            const copyCodeBtn = document.getElementById(`copyCodeBtn${capitalizeFirstLetter(modalId)}`);
+            if (copyCodeBtn) copyCodeBtn.classList.remove('copied');
+            
+            const copyKeyBtn = document.getElementById(`copyKeyBtn${capitalizeFirstLetter(modalId)}`);
+            if (copyKeyBtn) copyKeyBtn.classList.remove('copied');
         }
 
-        function closeModal(modalType) {
-            const modal = document.getElementById('modal-' + modalType);
+        function closeModal(modalId) {
+            const modal = document.getElementById(`modal-${modalId}`);
             modal.style.display = 'none';
         }
 
