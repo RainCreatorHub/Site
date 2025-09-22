@@ -21,6 +21,26 @@
       ]
     },
     {
+      "id": "main-scripts",
+      "title": "Meus scripts",
+      "subsections": [
+        {
+          "id": "subsection-1",
+          "title": "Nil",
+          "buttons": [
+            {
+              "label": "Ola",
+              "modalId": "Ola",
+              "modalTitle": "Oxi",
+              "description": "Bro?",
+              "code": "print('Meh')",
+              "key": "Não sei."
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "main-executors",
       "title": "Main | Executors",
       "buttons": [
