@@ -14,7 +14,21 @@
               "modalTitle": "H4x",
               "description": "Script OP mas com key",
               "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua\", true))()",
-              "key": "Nada ainda."
+              "key": "Ainda pegando."
+            }
+          ]
+        },
+        {
+          "id": "subsection-2",
+          "title": "Blox fruits",
+          "buttons": [
+            {
+              "label": "AndepZqi",
+              "modalId": "blox-fruits-andepzai",
+              "modalTitle": "AnDepZai | Beta?",
+              "description": "Script OP mas com key",
+              "code": "loadstring(game:HttpGet('https://raw.githubusercontent.com/AnDepZaiHub/AnDepZaiHubBeta/main/AnDepZaiHubBeta.lua'))()",
+              "key": "Não sei se tem key."
             }
           ]
         }
@@ -33,8 +47,8 @@
               "modalId": "plataform-steal-a-brainrot-my-scripts",
               "modalTitle": "Plataform",
               "description": "Plataforma pro steal a brainrot ou outro jogo.",
-              "code": "--[[\\n  Types: New | Beta | Old\\n]]\\n_G.Type = \"\"\\nif _G.Type == \"New\" then\\nloadstring(game:HttpGet(\"https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform%20New.lua\"))()\\nelseif _G.Type == \"Beta\" then\\nloadstring(game:HttpGet(\"https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform%20Beta.lua\"))()\\nelseif _G.Type == \"Old\" then\\nloadstring(game:HttpGet(\"https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform%20Old.lua\"))()\\nelse\\nloadstring(game:HttpGet(\"https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform.lua\"))()\\nend",
-              "key": "Não sei."
+              "code": "loadstring(game:HttpGet('https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform.lua'))()",
+              "key": "Sem key."
             }
           ]
         }
