@@ -23,10 +23,10 @@
           "title": "Blox fruits",
           "buttons": [
             {
-              "label": "AndepZqi",
+              "label": "AndepZai",
               "modalId": "blox-fruits-andepzai",
               "modalTitle": "AnDepZai | Beta?",
-              "description": "Script OP mas com key",
+              "description": "Script OP e não sei se tem key.",
               "code": "loadstring(game:HttpGet('https://raw.githubusercontent.com/AnDepZaiHub/AnDepZaiHubBeta/main/AnDepZaiHubBeta.lua'))()",
               "key": "Não sei se tem key."
             }
