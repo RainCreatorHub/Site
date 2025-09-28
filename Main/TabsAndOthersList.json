@@ -65,6 +65,10 @@
         {
           "label": "Krnl { Android }",
           "url": "https://krnl.webfiles.pro/android.html"
+        },
+        {
+          "label": "Krnl { Ios }",
+          "url": "https://krnl.webfiles.pro/ios.html"
         }
       ]
     }
