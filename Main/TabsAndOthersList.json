@@ -59,12 +59,12 @@
       "title": "Main | Executors",
       "buttons": [
         {
-          "label": "Delta",
+          "label": "Delta | Sem Link",
           "url": ""
         },
         {
-          "label": "Hello",
-          "url": ""
+          "label": "Krnl",
+          "url": "https://krnl.cat"
         }
       ]
     }
