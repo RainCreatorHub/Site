@@ -1,8 +1,8 @@
 {
   "sections": [
     {
-      "id": "main-scripts",
-      "title": "Main | Scripts",
+      "id": "roblox-scripts",
+      "title": "Scripts",
       "subsections": [
         {
           "id": "subsection-1",
@@ -55,8 +55,8 @@
       ]
     },
     {
-      "id": "main-executors",
-      "title": "Main | Executors",
+      "id": "roblox-executors",
+      "title": "Executors",
       "buttons": [
         {
           "label": "Delta | Sem Link",
