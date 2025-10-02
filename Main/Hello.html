@@ -264,6 +264,7 @@
             line-height: 1.4;
             font-size: 0.95rem;
             min-height: 60px;
+            white-space: pre-wrap;
         }
 
         .code-copy-btn {
@@ -418,7 +419,6 @@
         </header>
 
         <main id="dynamic-content">
-            <!-- Todo o conteúdo será injetado aqui via JavaScript -->
             <p style="text-align: center; padding: 20px;">Carregando...</p>
         </main>
 
@@ -428,8 +428,6 @@
     </div>
 
     <div class="toast" id="toast">Copiado para a área de transferência!</div>
-
-    <!-- Modais serão injetados aqui dinamicamente -->
     <div id="modals-container"></div>
 
     <script>
@@ -453,14 +451,13 @@
         function renderContent(data) {
             const main = document.getElementById('dynamic-content');
             const modalsContainer = document.getElementById('modals-container');
-            main.innerHTML = ''; // Limpa o placeholder "Carregando..."
-            modalsContainer.innerHTML = ''; // Limpa modais antigos
+            main.innerHTML = '';
+            modalsContainer.innerHTML = '';
 
             data.sections.forEach(section => {
                 const sectionElement = createSection(section);
                 main.appendChild(sectionElement);
 
-                // Se for uma seção com subseções, cria os modais para os botões
                 if (section.subsections) {
                     section.subsections.forEach(subsection => {
                         subsection.buttons.forEach(button => {
@@ -493,7 +490,6 @@
             sectionDiv.appendChild(header);
             sectionDiv.appendChild(content);
 
-            // Se for uma seção de executores (sem subseções)
             if (section.buttons && section.buttons.length > 0) {
                 const buttonContainer = document.createElement('div');
                 buttonContainer.className = 'button-container';
@@ -502,7 +498,7 @@
                     const buttonEl = document.createElement('a');
                     buttonEl.href = button.url;
                     buttonEl.className = 'external-link';
-                    buttonEl.target = '_blank'; // Abre em nova aba
+                    buttonEl.target = '_blank';
                     buttonEl.innerHTML = `
                         <span>${button.label}</span>
                         <i class="fas fa-external-link-alt"></i>
@@ -512,8 +508,7 @@
 
                 content.appendChild(buttonContainer);
             }
-
-            // Se for uma seção com subseções (scripts)
+            
             if (section.subsections && section.subsections.length > 0) {
                 section.subsections.forEach(subsection => {
                     const subsectionDiv = document.createElement('div');
@@ -561,6 +556,8 @@
             modalDiv.className = 'modal';
             modalDiv.id = `modal-${button.modalId}`;
 
+            const codeContent = Array.isArray(button.code) ? button.code.join('\n') : button.code;
+
             let modalContent = `
                 <div class="modal-content">
                     <div class="modal-header">
@@ -570,15 +567,13 @@
                     <div class="modal-body">
                         <p class="modal-description">${button.description}</p>
                         <div class="code-container">
-                            <div class="code-block">${button.code}</div>
-                            <button class="code-copy-btn" id="copyCodeBtn${capitalizeFirstLetter(button.modalId)}" onclick="copyCode('${button.modalId}', \`${button.code}\`)">
+                            <div class="code-block">${codeContent}</div>
+                            <button class="code-copy-btn" id="copyCodeBtn${capitalizeFirstLetter(button.modalId)}" onclick="copyCode('${button.modalId}')">
                                 <i class="fas fa-copy copy-icon"></i>
                                 <i class="fas fa-check check-icon"></i>
                             </button>
                         </div>
             `;
-
-            // Se houver chave, adiciona o campo de chave
             if (button.key) {
                 modalContent += `
                         <div class="modal-key">
@@ -606,7 +601,6 @@
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
 
-        // Funções de Controle (mantidas do original, mas ajustadas)
         function toggleSection(sectionId) {
             const section = document.getElementById(sectionId);
             const icon = document.getElementById(sectionId + '-icon');
@@ -623,7 +617,11 @@
             icon.classList.toggle('open');
         }
 
-        function copyCode(modalId, code) {
+        function copyCode(modalId) {
+            const modal = document.getElementById(`modal-${modalId}`);
+            const codeBlock = modal.querySelector('.code-block');
+            const code = codeBlock.textContent;
+
             navigator.clipboard.writeText(code).then(() => {
                 const copyBtn = document.getElementById(`copyCodeBtn${capitalizeFirstLetter(modalId)}`);
                 copyBtn.classList.add('copied');
@@ -633,7 +631,6 @@
                     copyBtn.classList.remove('copied');
                 }, 2000);
             }).catch(err => {
-                // Fallback para navegadores antigos
                 const textArea = document.createElement('textarea');
                 textArea.value = code;
                 document.body.appendChild(textArea);
@@ -692,7 +689,6 @@
             const modal = document.getElementById(`modal-${modalId}`);
             modal.style.display = 'flex';
             
-            // Reseta o estado "copiado" dos botões
             const copyCodeBtn = document.getElementById(`copyCodeBtn${capitalizeFirstLetter(modalId)}`);
             if (copyCodeBtn) copyCodeBtn.classList.remove('copied');
             
