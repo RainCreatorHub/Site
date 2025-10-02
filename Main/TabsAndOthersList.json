@@ -48,7 +48,8 @@
               "modalTitle": "Plataform",
               "description": "Plataforma pro steal a brainrot ou outro jogo.",
               "code": [
-                "loadstring(game:HttpGet('https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform.lua'))()"
+                "loadstring(game:HttpGet('https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform.lua'))()",
+                "warn('Loaded!')"
               ],
               "key": "Sem key."
             }
