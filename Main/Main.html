@@ -1,1 +1,714 @@
-<p>Espere.</p>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox | Hack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0c0e2a, #1a237e, #1565c0);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(to right, #4fc3f7, #2979ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 1.2rem;
+        }
+
+        .section {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-header {
+            padding: 18px 20px;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .section-header:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #4fc3f7;
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .section-content.open {
+            max-height: 1000px;
+        }
+
+        .subsection {
+            padding: 15px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .subsection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 0;
+        }
+
+        .subsection-title {
+            font-size: 1.2rem;
+            color: #2979ff;
+        }
+
+        .subsection-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .subsection-content.open {
+            max-height: 500px;
+        }
+
+        .button-container {
+            padding: 15px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .button, .external-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: linear-gradient(to right, #1565c0, #2979ff);
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .button:hover, .external-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 12px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to right, #2979ff, #448aff);
+        }
+
+        .sub-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            background: rgba(21, 101, 192, 0.7);
+            border-radius: 6px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sub-button:hover {
+            background: rgba(41, 121, 255, 0.8);
+        }
+
+        .icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .icon.open {
+            transform: rotate(180deg);
+        }
+
+        .key-text {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+            font-family: 'Courier New', monospace;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a237e, #1565c0);
+            padding: 25px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            color: #4fc3f7;
+        }
+
+        .close {
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: #4fc3f7;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-description {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .code-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 50px 15px 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            line-height: 1.4;
+            font-size: 0.95rem;
+            min-height: 60px;
+            white-space: pre-wrap;
+        }
+
+        .code-copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #2979ff;
+            border: none;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .code-copy-btn:hover {
+            background: #448aff;
+        }
+
+        .code-copy-btn.copied {
+            background: #4caf50;
+        }
+
+        .code-copy-btn .copy-icon, .code-copy-btn .check-icon {
+            font-size: 1rem;
+        }
+
+        .code-copy-btn .check-icon {
+            display: none;
+        }
+
+        .code-copy-btn.copied .copy-icon {
+            display: none;
+        }
+
+        .code-copy-btn.copied .check-icon {
+            display: inline;
+        }
+
+        .modal-key {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+        }
+
+        .key-content {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .copy-btn {
+            background: #2979ff;
+            border: none;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #448aff;
+        }
+
+        .copy-btn.copied {
+            background: #4caf50;
+        }
+
+        .copy-btn .copy-icon, .copy-btn .check-icon {
+            font-size: 1rem;
+        }
+
+        .copy-btn .check-icon {
+            display: none;
+        }
+
+        .copy-btn.copied .copy-icon {
+            display: none;
+        }
+
+        .copy-btn.copied .check-icon {
+            display: inline;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+            }
+            
+            .subsection-title {
+                font-size: 1.1rem;
+            }
+            
+            .button, .sub-button, .external-link {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .modal-title {
+                font-size: 1.5rem;
+            }
+            
+            .modal-content {
+                padding: 15px;
+            }
+            
+            .code-block, .modal-key {
+                font-size: 0.85rem;
+                padding: 10px;
+            }
+            
+            .code-block {
+                padding-right: 45px;
+            }
+            
+            .code-copy-btn, .copy-btn {
+                padding: 5px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Roblox | Hack</h1>
+            <p class="subtitle">Ferramentas e scripts para Roblox</p>
+        </header>
+
+        <main id="dynamic-content">
+            <p style="text-align: center; padding: 20px;">Carregando...</p>
+        </main>
+
+        <footer>
+            <p>© 2025 Roblox | Hack - Todos os direitos reservados</p>
+        </footer>
+    </div>
+
+    <div class="toast" id="toast">Copiado para a área de transferência!</div>
+    <div id="modals-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchAndRenderContent();
+        });
+
+        async function fetchAndRenderContent() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/RainCreatorHub/Site/refs/heads/main/Main/TabsAndOthersList.json');
+                if (!response.ok) {
+                    throw new Error('Falha ao carregar o conteúdo.');
+                }
+                const data = await response.json();
+                renderContent(data);
+            } catch (error) {
+                document.getElementById('dynamic-content').innerHTML = `<p style="color: red; text-align: center;">Erro: ${error.message}</p>`;
+            }
+        }
+
+        function renderContent(data) {
+            const main = document.getElementById('dynamic-content');
+            const modalsContainer = document.getElementById('modals-container');
+            main.innerHTML = '';
+            modalsContainer.innerHTML = '';
+
+            data.sections.forEach(section => {
+                const sectionElement = createSection(section);
+                main.appendChild(sectionElement);
+
+                if (section.subsections) {
+                    section.subsections.forEach(subsection => {
+                        subsection.buttons.forEach(button => {
+                            if (button.modalId) {
+                                const modalElement = createModal(button);
+                                modalsContainer.appendChild(modalElement);
+                            }
+                        });
+                    });
+                }
+            });
+        }
+
+        function createSection(section) {
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'section';
+
+            const header = document.createElement('div');
+            header.className = 'section-header';
+            header.innerHTML = `
+                <div class="section-title">${section.title}</div>
+                <div class="icon" id="${section.id}-icon"><i class="fas fa-chevron-down"></i></div>
+            `;
+            header.onclick = () => toggleSection(section.id);
+
+            const content = document.createElement('div');
+            content.className = 'section-content';
+            content.id = section.id;
+
+            sectionDiv.appendChild(header);
+            sectionDiv.appendChild(content);
+
+            if (section.buttons && section.buttons.length > 0) {
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'button-container';
+
+                section.buttons.forEach(button => {
+                    const buttonEl = document.createElement('a');
+                    buttonEl.href = button.url;
+                    buttonEl.className = 'external-link';
+                    buttonEl.target = '_blank';
+                    buttonEl.innerHTML = `
+                        <span>${button.label}</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    `;
+                    buttonContainer.appendChild(buttonEl);
+                });
+
+                content.appendChild(buttonContainer);
+            }
+            
+            if (section.subsections && section.subsections.length > 0) {
+                section.subsections.forEach(subsection => {
+                    const subsectionDiv = document.createElement('div');
+                    subsectionDiv.className = 'subsection';
+
+                    const subHeader = document.createElement('div');
+                    subHeader.className = 'subsection-header';
+                    subHeader.innerHTML = `
+                        <div class="subsection-title">${subsection.title}</div>
+                        <div class="icon" id="${subsection.id}-icon"><i class="fas fa-chevron-down"></i></div>
+                    `;
+                    subHeader.onclick = () => toggleSubSection(subsection.id);
+
+                    const subContent = document.createElement('div');
+                    subContent.className = 'subsection-content';
+                    subContent.id = subsection.id;
+
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.className = 'button-container';
+
+                    subsection.buttons.forEach(button => {
+                        const buttonEl = document.createElement('div');
+                        buttonEl.className = 'button';
+                        buttonEl.innerHTML = `
+                            <span>${button.label}</span>
+                            <i class="fas fa-code"></i>
+                        `;
+                        buttonEl.onclick = () => openModal(button.modalId);
+                        buttonContainer.appendChild(buttonEl);
+                    });
+
+                    subContent.appendChild(buttonContainer);
+                    subsectionDiv.appendChild(subHeader);
+                    subsectionDiv.appendChild(subContent);
+
+                    content.appendChild(subsectionDiv);
+                });
+            }
+
+            return sectionDiv;
+        }
+
+        function createModal(button) {
+            const modalDiv = document.createElement('div');
+            modalDiv.className = 'modal';
+            modalDiv.id = `modal-${button.modalId}`;
+
+            const codeContent = Array.isArray(button.code) ? button.code.join('\n') : button.code;
+
+            let modalContent = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">${button.modalTitle}</h2>
+                        <span class="close" onclick="closeModal('${button.modalId}')">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <p class="modal-description">${button.description}</p>
+                        <div class="code-container">
+                            <div class="code-block">${codeContent}</div>
+                            <button class="code-copy-btn" id="copyCodeBtn${capitalizeFirstLetter(button.modalId)}" onclick="copyCode('${button.modalId}')">
+                                <i class="fas fa-copy copy-icon"></i>
+                                <i class="fas fa-check check-icon"></i>
+                            </button>
+                        </div>
+            `;
+            if (button.key) {
+                modalContent += `
+                        <div class="modal-key">
+                            <div class="key-content">
+                                <span>Key: ${button.key}</span>
+                            </div>
+                            <button class="copy-btn" id="copyKeyBtn${capitalizeFirstLetter(button.modalId)}" onclick="copyKey('${button.key}', '${button.modalId}')">
+                                <i class="fas fa-copy copy-icon"></i>
+                                <i class="fas fa-check check-icon"></i>
+                            </button>
+                        </div>
+                `;
+            }
+
+            modalContent += `
+                    </div>
+                </div>
+            `;
+
+            modalDiv.innerHTML = modalContent;
+            return modalDiv;
+        }
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const icon = document.getElementById(sectionId + '-icon');
+            
+            section.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+
+        function toggleSubSection(subSectionId) {
+            const subSection = document.getElementById(subSectionId);
+            const icon = document.getElementById(subSectionId + '-icon');
+            
+            subSection.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+
+        function copyCode(modalId) {
+            const modal = document.getElementById(`modal-${modalId}`);
+            const codeBlock = modal.querySelector('.code-block');
+            const code = codeBlock.textContent;
+
+            navigator.clipboard.writeText(code).then(() => {
+                const copyBtn = document.getElementById(`copyCodeBtn${capitalizeFirstLetter(modalId)}`);
+                copyBtn.classList.add('copied');
+                showToast('Código copiado para a área de transferência!');
+                
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                const textArea = document.createElement('textarea');
+                textArea.value = code;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const copyBtn = document.getElementById(`copyCodeBtn${capitalizeFirstLetter(modalId)}`);
+                copyBtn.classList.add('copied');
+                showToast('Código copiado para a área de transferência!');
+                
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function copyKey(key, modalId) {
+            navigator.clipboard.writeText(key).then(() => {
+                const copyBtn = document.getElementById(`copyKeyBtn${capitalizeFirstLetter(modalId)}`);
+                copyBtn.classList.add('copied');
+                showToast('Chave copiada para a área de transferência!');
+                
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                const textArea = document.createElement('textarea');
+                textArea.value = key;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const copyBtn = document.getElementById(`copyKeyBtn${capitalizeFirstLetter(modalId)}`);
+                copyBtn.classList.add('copied');
+                showToast('Chave copiada para a área de transferência!');
+                
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function openModal(modalId) {
+            const modal = document.getElementById(`modal-${modalId}`);
+            modal.style.display = 'flex';
+            
+            const copyCodeBtn = document.getElementById(`copyCodeBtn${capitalizeFirstLetter(modalId)}`);
+            if (copyCodeBtn) copyCodeBtn.classList.remove('copied');
+            
+            const copyKeyBtn = document.getElementById(`copyKeyBtn${capitalizeFirstLetter(modalId)}`);
+            if (copyKeyBtn) copyKeyBtn.classList.remove('copied');
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(`modal-${modalId}`);
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    modal.style.display = 'none';
+                });
+            }
+        }
+    </script>
+</body>
+</html>
