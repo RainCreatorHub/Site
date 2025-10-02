@@ -418,7 +418,6 @@
         </header>
 
         <main id="dynamic-content">
-            <!-- Todo o conteúdo será injetado aqui via JavaScript -->
             <p style="text-align: center; padding: 20px;">Carregando...</p>
         </main>
 
@@ -428,8 +427,6 @@
     </div>
 
     <div class="toast" id="toast">Copiado para a área de transferência!</div>
-
-    <!-- Modais serão injetados aqui dinamicamente -->
     <div id="modals-container"></div>
 
     <script>
@@ -453,14 +450,13 @@
         function renderContent(data) {
             const main = document.getElementById('dynamic-content');
             const modalsContainer = document.getElementById('modals-container');
-            main.innerHTML = ''; // Limpa o placeholder "Carregando..."
-            modalsContainer.innerHTML = ''; // Limpa modais antigos
+            main.innerHTML = '';
+            modalsContainer.innerHTML = '';
 
             data.sections.forEach(section => {
                 const sectionElement = createSection(section);
                 main.appendChild(sectionElement);
 
-                // Se for uma seção com subseções, cria os modais para os botões
                 if (section.subsections) {
                     section.subsections.forEach(subsection => {
                         subsection.buttons.forEach(button => {
