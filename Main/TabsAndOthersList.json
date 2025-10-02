@@ -59,8 +59,12 @@
       "title": "Executors",
       "buttons": [
         {
-          "label": "Delta | Sem Link",
-          "url": ""
+          "label": "Delta { Android }",
+          "url": "https://deltaexploits.gg/delta-executor-android"
+        },
+        {
+          "label": "Delta { ios }",
+          "url": "https://deltaexploits.gg/delta-executor-ios"
         },
         {
           "label": "Krnl { Android }",
