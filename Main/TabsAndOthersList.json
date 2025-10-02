@@ -47,7 +47,9 @@
               "modalId": "plataform-steal-a-brainrot-my-scripts",
               "modalTitle": "Plataform",
               "description": "Plataforma pro steal a brainrot ou outro jogo.",
-              "code": "print('Ola')\nloadstring(game:HttpGet('https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform.lua'))()",
+              "code": [
+                "loadstring(game:HttpGet('https://raw.githubusercontent.com/RainCreatorHub/Games/refs/heads/main/Universal/Plataform.lua'))()"
+              ],
               "key": "Sem key."
             }
           ]
