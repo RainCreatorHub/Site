@@ -373,11 +373,21 @@
             color: var(--accent-color);
             border-bottom: 2px solid var(--accent-color);
         }
+        
+        /* Instructions */
+        .instructions {
+            padding: 10px 15px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1><i class="fas fa-camera me-2"></i>PhotoEditor</h1>
+        <h1><i class="fas fa-camera me-2"></i>Editor de Fotos</h1>
         <button class="theme-toggle" id="themeToggle">
             <i class="fas fa-moon"></i>
         </button>
@@ -397,6 +407,10 @@
         <canvas id="preview-canvas" width="400" height="400"></canvas>
     </div>
 
+    <div class="instructions">
+        <i class="fas fa-info-circle"></i> A imagem será baixada com fundo transparente
+    </div>
+
     <div class="layers-panel" id="layersPanel">
         <div class="panel-header">
             <span class="panel-title">Camadas</span>
@@ -405,7 +419,6 @@
             </button>
         </div>
         <div class="layers-list" id="layersList">
-            <!-- As camadas serão inseridas aqui dinamicamente -->
             <div class="empty-state">
                 <i class="fas fa-layer-group"></i>
                 <p>Nenhuma imagem adicionada</p>
@@ -446,10 +459,9 @@
             selectionLineWidth: 2
         });
 
-        // Canvas para pré-visualização com fundo transparente
-        const previewCanvas = new fabric.Canvas('preview-canvas', {
-            backgroundColor: null, // Fundo transparente
-            selection: false
+        // Canvas para exportação com fundo transparente
+        const exportCanvas = new fabric.Canvas(null, {
+            backgroundColor: null // Fundo totalmente transparente
         });
         
         // Ajustar canvas para mobile
@@ -463,13 +475,14 @@
                 height: size
             });
             
-            previewCanvas.setDimensions({
-                width: size,
-                height: size
-            });
+            // Atualizar o canvas de pré-visualização
+            const previewCanvas = document.getElementById('preview-canvas');
+            if (previewCanvas) {
+                previewCanvas.width = size;
+                previewCanvas.height = size;
+            }
             
             canvas.renderAll();
-            previewCanvas.renderAll();
         }
         
         window.addEventListener('resize', resizeCanvas);
@@ -583,9 +596,6 @@
                     // Atualiza a lista de camadas
                     updateLayersOrder();
                     
-                    // Atualiza a pré-visualização
-                    updatePreview();
-                    
                     // Mostra o painel de camadas
                     layersPanel.classList.add('active');
                     
@@ -680,9 +690,6 @@
                 canvas.remove(obj);
                 layerItem.remove();
                 
-                // Atualiza a pré-visualização
-                updatePreview();
-                
                 // Se não houver mais camadas, mostra o estado vazio
                 if (layersList.children.length === 0) {
                     layersList.innerHTML = `
@@ -718,9 +725,6 @@
                 
                 // Atualiza a ordem no canvas
                 updateCanvasOrder();
-                
-                // Atualiza a pré-visualização
-                updatePreview();
             });
             
             layerItem.addEventListener('dragover', (e) => {
@@ -753,9 +757,6 @@
                     
                     // Atualiza a ordem no canvas
                     updateCanvasOrder();
-                    
-                    // Atualiza a pré-visualização
-                    updatePreview();
                 }
                 
                 return false;
@@ -788,21 +789,42 @@
 
         // Atualiza a pré-visualização com fundo transparente
         function updatePreview() {
-            // Limpa o canvas de pré-visualização
-            previewCanvas.clear();
+            const previewCanvas = document.getElementById('preview-canvas');
+            const ctx = previewCanvas.getContext('2d');
             
-            // Obtém todos os objetos do canvas principal
+            // Limpa o canvas
+            ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+            
+            // Cria um fundo quadriculado para visualizar transparência
+            const size = 10;
+            for (let x = 0; x < previewCanvas.width; x += size) {
+                for (let y = 0; y < previewCanvas.height; y += size) {
+                    ctx.fillStyle = (x / size + y / size) % 2 === 0 ? '#2d2d2d' : '#3d3d3d';
+                    ctx.fillRect(x, y, size, size);
+                }
+            }
+            
+            // Desenha todos os objetos do canvas principal
             const objects = canvas.getObjects();
-            
-            // Adiciona cada objeto ao canvas de pré-visualização
             objects.forEach(obj => {
-                // Clona o objeto para evitar referências cruzadas
-                obj.clone(clonedObj => {
-                    previewCanvas.add(clonedObj);
+                // Clona o objeto para evitar problemas de referência
+                const objData = obj.toObject();
+                fabric.util.enlivenObjects([objData], (enlivenedObjects) => {
+                    const clonedObj = enlivenedObjects[0];
+                    clonedObj.set({
+                        left: obj.left,
+                        top: obj.top,
+                        scaleX: obj.scaleX,
+                        scaleY: obj.scaleY,
+                        angle: obj.angle,
+                        originX: obj.originX,
+                        originY: obj.originY
+                    });
+                    
+                    // Renderiza o objeto no canvas de pré-visualização
+                    clonedObj.render(ctx);
                 });
             });
-            
-            previewCanvas.renderAll();
         }
 
         // Função para mostrar notificações
@@ -841,7 +863,9 @@
         // Evento quando um objeto é modificado no canvas
         canvas.on('object:modified', (e) => {
             // Atualiza a pré-visualização quando um objeto é modificado
-            updatePreview();
+            if (previewContainer.style.display !== 'none') {
+                updatePreview();
+            }
         });
 
         // Download da imagem com fundo transparente
@@ -851,18 +875,60 @@
                 return;
             }
             
-            // Usa o canvas de pré-visualização para gerar a imagem com fundo transparente
-            const link = document.createElement('a');
-            link.download = 'minha-foto-editada.png';
-            link.href = previewCanvas.toDataURL({
-                format: 'png',
-                quality: 0.9
-            });
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            // Calcula o tamanho necessário para a imagem exportada
+            const objects = canvas.getObjects();
+            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
             
-            showToast('Imagem baixada com fundo transparente!');
+            objects.forEach(obj => {
+                const boundingRect = obj.getBoundingRect();
+                minX = Math.min(minX, boundingRect.left);
+                minY = Math.min(minY, boundingRect.top);
+                maxX = Math.max(maxX, boundingRect.left + boundingRect.width);
+                maxY = Math.max(maxY, boundingRect.top + boundingRect.height);
+            });
+            
+            // Adiciona uma margem de 10px
+            const margin = 10;
+            const width = maxX - minX + margin * 2;
+            const height = maxY - minY + margin * 2;
+            
+            // Configura o canvas de exportação com o tamanho calculado
+            exportCanvas.setDimensions({ width, height });
+            exportCanvas.clear(); // Limpa qualquer conteúdo anterior
+            
+            // Adiciona cada objeto ao canvas de exportação com posições ajustadas
+            objects.forEach(obj => {
+                const objData = obj.toObject();
+                fabric.util.enlivenObjects([objData], (enlivenedObjects) => {
+                    const clonedObj = enlivenedObjects[0];
+                    clonedObj.set({
+                        left: obj.left - minX + margin,
+                        top: obj.top - minY + margin,
+                        scaleX: obj.scaleX,
+                        scaleY: obj.scaleY,
+                        angle: obj.angle,
+                        originX: obj.originX,
+                        originY: obj.originY
+                    });
+                    
+                    exportCanvas.add(clonedObj);
+                    
+                    // Quando todos os objetos forem adicionados, faz o download
+                    if (exportCanvas.getObjects().length === objects.length) {
+                        const link = document.createElement('a');
+                        link.download = 'minha-foto-editada.png';
+                        link.href = exportCanvas.toDataURL({
+                            format: 'png',
+                            quality: 0.95
+                        });
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        
+                        showToast('Imagem baixada com fundo transparente!');
+                    }
+                });
+            });
         });
 
         // Inicialização
