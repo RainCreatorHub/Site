@@ -2,39 +2,31 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Editor de Fotos - Mobile Dark</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* Cores do Tema Claro (como fallback) */
-            --bg-primary: #f0f2f5;
-            --bg-secondary: #ffffff;
-            --bg-tertiary: #e4e6eb;
-            --text-primary: #1c1e21;
-            --text-secondary: #65676b;
-            --accent-color: #4361ee;
-            --border-color: #dddfe2;
-            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Tema Escuro */
-        body.dark-theme {
             --bg-primary: #121212;
             --bg-secondary: #1e1e1e;
             --bg-tertiary: #2d2d2d;
+            --bg-card: #252525;
             --text-primary: #e4e6eb;
             --text-secondary: #b0b3b8;
             --accent-color: #4cc9f0;
+            --accent-hover: #3aa8c9;
             --border-color: #3e4042;
-            --shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            --shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+            --success: #4CAF50;
+            --danger: #f44336;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -42,22 +34,12 @@
             background-color: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
-            /* Garante que a altura ocupe a tela inteira */
             min-height: 100vh;
-            /* Suaviza a transição de cores */
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* Container Principal para Mobile */
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            max-width: 100%;
             overflow-x: hidden;
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* Cabeçalho */
+        /* Header */
         .header {
             background-color: var(--bg-secondary);
             padding: 15px;
@@ -86,14 +68,14 @@
             background-color: var(--bg-tertiary);
         }
 
-        /* Área do Canvas */
+        /* Canvas Area */
         .canvas-container {
-            flex-grow: 1;
             background-color: var(--bg-tertiary);
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px;
+            padding: 15px;
+            min-height: 50vh;
             position: relative;
         }
 
@@ -101,12 +83,11 @@
             background-color: var(--bg-secondary);
             border-radius: 8px;
             box-shadow: var(--shadow);
-            /* O canvas será responsivo */
             max-width: 100%;
-            height: auto;
+            touch-action: none;
         }
 
-        /* Painel de Controles Móveis */
+        /* Mobile Controls */
         .mobile-controls {
             background-color: var(--bg-secondary);
             border-top: 1px solid var(--border-color);
@@ -125,18 +106,22 @@
             background: none;
             border: none;
             color: var(--text-secondary);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             cursor: pointer;
-            padding: 8px 12px;
+            padding: 8px 5px;
             border-radius: 8px;
             transition: all 0.2s ease;
             flex: 1;
-            max-width: 80px;
+            max-width: 70px;
         }
 
-        .control-btn:hover,
         .control-btn:active {
             background-color: var(--bg-tertiary);
+            color: var(--accent-color);
+            transform: scale(0.95);
+        }
+
+        .control-btn.active {
             color: var(--accent-color);
         }
 
@@ -145,17 +130,22 @@
             margin-bottom: 4px;
         }
 
-        /* Painel de Camadas para Mobile */
+        /* Layers Panel */
         .layers-panel {
             background-color: var(--bg-secondary);
             border-top: 1px solid var(--border-color);
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
+            position: fixed;
+            bottom: 70px;
+            left: 0;
+            right: 0;
+            z-index: 90;
         }
 
         .layers-panel.active {
-            max-height: 40vh;
+            max-height: 50vh;
             overflow-y: auto;
         }
 
@@ -165,40 +155,160 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .panel-title {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .layers-list {
+            padding: 10px;
         }
 
         .layer-item {
             display: flex;
             align-items: center;
-            padding: 12px 15px;
+            padding: 12px 10px;
             border-bottom: 1px solid var(--border-color);
+            background-color: var(--bg-card);
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: grab;
+            transition: transform 0.2s, background-color 0.2s;
+            user-select: none;
+        }
+
+        .layer-item:active {
+            cursor: grabbing;
+            transform: scale(1.02);
+            background-color: var(--bg-tertiary);
+        }
+
+        .layer-item.active {
+            border-left: 4px solid var(--accent-color);
+            background-color: var(--bg-tertiary);
         }
 
         .layer-thumb {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 6px;
             background-color: var(--bg-tertiary);
-            margin-right: 10px;
+            margin-right: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 0.9rem;
             color: var(--text-secondary);
+            overflow: hidden;
         }
 
-        /* Torna o site verdadeiramente responsivo */
-        @media (min-width: 768px) {
-            /* Este CSS garante que, mesmo em telas maiores, o layout mobile será priorizado */
-            .app-container {
-                max-width: 480px; /* Limita a largura máxima, comum em dispositivos móveis */
-                margin: 0 auto; /* Centraliza na tela */
-                border-left: 1px solid var(--border-color);
-                border-right: 1px solid var(--border-color);
-            }
+        .layer-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        /* Estilização da barra de rolagem para o painel de camadas */
+        .layer-info {
+            flex-grow: 1;
+        }
+
+        .layer-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .layer-size {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .layer-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .action-btn:active {
+            background-color: var(--bg-tertiary);
+        }
+
+        .delete-btn:active {
+            color: var(--danger);
+        }
+
+        /* Drop Indicator */
+        .drop-indicator {
+            height: 3px;
+            background-color: var(--accent-color);
+            margin: 5px 0;
+            border-radius: 2px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .drop-indicator.visible {
+            opacity: 1;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        /* Drag Handle */
+        .drag-handle {
+            color: var(--text-secondary);
+            margin-right: 10px;
+            cursor: grab;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+
+        /* Scrollbar Styling */
         .layers-panel::-webkit-scrollbar {
             width: 6px;
         }
@@ -213,65 +323,74 @@
         }
     </style>
 </head>
-<body class="dark-theme">
-    <div class="app-container">
-        <div class="header">
-            <h1><i class="fas fa-camera me-2"></i>PhotoEditor</h1>
-            <button class="theme-toggle" id="themeToggle">
-                <i class="fas fa-moon"></i>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-camera me-2"></i>PhotoEditor</h1>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="canvas-container">
+        <canvas id="main-canvas" width="400" height="400"></canvas>
+    </div>
+
+    <div class="layers-panel" id="layersPanel">
+        <div class="panel-header">
+            <span class="panel-title">Camadas</span>
+            <button id="closeLayers" class="control-btn">
+                <i class="fas fa-times"></i>
             </button>
         </div>
-
-        <div class="canvas-container">
-            <canvas id="main-canvas" width="400" height="500"></canvas>
-        </div>
-
-        <div class="layers-panel" id="layersPanel">
-            <div class="panel-header">
-                <span>Camadas</span>
-                <button id="closeLayers" class="control-btn">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div id="layersList">
-                <!-- As camadas serão listadas aqui via JavaScript -->
-            </div>
-        </div>
-
-        <div class="mobile-controls">
-            <button class="control-btn" id="addImageBtn">
-                <i class="fas fa-image"></i>
-                <span>Add</span>
-            </button>
-            <button class="control-btn" id="layersBtn">
+        <div class="layers-list" id="layersList">
+            <!-- As camadas serão inseridas aqui dinamicamente -->
+            <div class="empty-state">
                 <i class="fas fa-layer-group"></i>
-                <span>Camadas</span>
-            </button>
-            <button class="control-btn" id="transformBtn">
-                <i class="fas fa-expand-alt"></i>
-                <span>Transformar</span>
-            </button>
-            <button class="control-btn" id="downloadBtn">
-                <i class="fas fa-download"></i>
-                <span>Baixar</span>
-            </button>
+                <p>Nenhuma imagem adicionada</p>
+            </div>
         </div>
     </div>
+
+    <div class="mobile-controls">
+        <button class="control-btn" id="addImageBtn">
+            <i class="fas fa-image"></i>
+            <span>Adicionar</span>
+        </button>
+        <button class="control-btn" id="layersBtn">
+            <i class="fas fa-layer-group"></i>
+            <span>Camadas</span>
+        </button>
+        <button class="control-btn" id="transformBtn">
+            <i class="fas fa-expand-alt"></i>
+            <span>Transformar</span>
+        </button>
+        <button class="control-btn" id="downloadBtn">
+            <i class="fas fa-download"></i>
+            <span>Baixar</span>
+        </button>
+    </div>
+
+    <div class="toast" id="toast"></div>
 
     <input type="file" id="fileInput" accept="image/*" style="display: none;">
 
     <script>
         // Inicialização do Canvas
         const canvas = new fabric.Canvas('main-canvas', {
-            backgroundColor: '#1e1e1e'
+            backgroundColor: '#1e1e1e',
+            selection: true,
+            selectionColor: 'rgba(76, 201, 240, 0.3)',
+            selectionBorderColor: '#4cc9f0',
+            selectionLineWidth: 2
         });
         
         // Ajustar canvas para mobile
         function resizeCanvas() {
             const container = document.querySelector('.canvas-container');
+            const size = Math.min(container.clientWidth - 30, 400);
             canvas.setDimensions({
-                width: Math.min(container.clientWidth - 20, 400),
-                height: Math.min(container.clientHeight - 20, 500)
+                width: size,
+                height: size
             });
             canvas.renderAll();
         }
@@ -279,7 +398,23 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // Controle do Tema Escuro/Claro
+        // Estado da aplicação
+        let layerCount = 0;
+        let isDraggingLayer = false;
+        let dragStartIndex = -1;
+        let draggedElement = null;
+
+        // Referências aos elementos do DOM
+        const layersPanel = document.getElementById('layersPanel');
+        const layersBtn = document.getElementById('layersBtn');
+        const closeLayers = document.getElementById('closeLayers');
+        const layersList = document.getElementById('layersList');
+        const fileInput = document.getElementById('fileInput');
+        const addImageBtn = document.getElementById('addImageBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const toast = document.getElementById('toast');
+
+        // Controle do Tema
         const themeToggle = document.getElementById('themeToggle');
         const iconTheme = themeToggle.querySelector('i');
         
@@ -296,10 +431,6 @@
         });
 
         // Controle do Painel de Camadas
-        const layersPanel = document.getElementById('layersPanel');
-        const layersBtn = document.getElementById('layersBtn');
-        const closeLayers = document.getElementById('closeLayers');
-        
         layersBtn.addEventListener('click', () => {
             layersPanel.classList.add('active');
         });
@@ -308,13 +439,7 @@
             layersPanel.classList.remove('active');
         });
 
-        // Gerenciamento de Imagens e Camadas (exemplo simplificado)
-        const fileInput = document.getElementById('fileInput');
-        const addImageBtn = document.getElementById('addImageBtn');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const layersList = document.getElementById('layersList');
-        let layerCount = 0;
-
+        // Adicionar imagem
         addImageBtn.addEventListener('click', () => {
             fileInput.click();
         });
@@ -328,74 +453,284 @@
                 fabric.Image.fromURL(event.target.result, (img) => {
                     layerCount++;
                     
+                    // Calcula o scale para a imagem caber no canvas
+                    const maxWidth = canvas.getWidth() * 0.7;
+                    const maxHeight = canvas.getHeight() * 0.7;
+                    let scale = 1;
+                    
+                    if (img.width > maxWidth || img.height > maxHeight) {
+                        scale = Math.min(maxWidth / img.width, maxHeight / img.height);
+                    }
+                    
                     img.set({
-                        left: 50,
-                        top: 50,
+                        left: canvas.getWidth() / 2,
+                        top: canvas.getHeight() / 2,
                         angle: 0,
-                        scaleX: 0.5,
-                        scaleY: 0.5,
+                        scaleX: scale,
+                        scaleY: scale,
+                        originX: 'center',
+                        originY: 'center',
                         id: `layer_${layerCount}`,
                         cornerStyle: 'circle',
-                        cornerColor: '#4361ee',
+                        cornerColor: '#4cc9f0',
                         cornerSize: 12,
-                        transparentCorners: false
+                        transparentCorners: false,
+                        hasControls: true,
+                        hasBorders: true
                     });
 
                     canvas.add(img);
                     addLayerToList(img, layerCount);
                     canvas.setActiveObject(img);
                     
-                    // Fecha o painel de camadas após adicionar uma imagem
+                    // Atualiza a lista de camadas
+                    updateLayersOrder();
+                    
+                    // Mostra o painel de camadas
                     layersPanel.classList.add('active');
+                    
+                    showToast('Imagem adicionada com sucesso!');
                 });
             };
             reader.readAsDataURL(file);
+            
+            // Reset do input para permitir adicionar a mesma imagem novamente
+            fileInput.value = '';
         });
 
+        // Função para adicionar item na lista de camadas
         function addLayerToList(obj, index) {
+            // Remove o estado vazio se existir
+            const emptyState = layersList.querySelector('.empty-state');
+            if (emptyState) {
+                emptyState.remove();
+            }
+            
             const layerItem = document.createElement('div');
             layerItem.className = 'layer-item';
             layerItem.setAttribute('data-id', obj.id);
+            layerItem.setAttribute('draggable', 'true');
+            
+            // Cria uma miniatura da imagem
+            const thumbnail = document.createElement('div');
+            thumbnail.className = 'layer-thumb';
+            
+            // Cria uma imagem em miniatura
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 50;
+                canvas.height = 50;
+                
+                // Calcula dimensões para manter a proporção
+                const ratio = Math.min(50 / this.width, 50 / this.height);
+                const width = this.width * ratio;
+                const height = this.height * ratio;
+                const x = (50 - width) / 2;
+                const y = (50 - height) / 2;
+                
+                ctx.fillStyle = '#2d2d2d';
+                ctx.fillRect(0, 0, 50, 50);
+                ctx.drawImage(this, x, y, width, height);
+                
+                thumbnail.innerHTML = '';
+                thumbnail.appendChild(canvas);
+            };
+            img.src = obj.toDataURL({ format: 'png', quality: 0.1 });
             
             layerItem.innerHTML = `
-                <div class="layer-thumb">Img ${index}</div>
-                <div style="flex-grow: 1;">
-                    <div style="font-weight: 500;">Imagem ${index}</div>
-                    <small style="color: var(--text-secondary);">${Math.round(obj.width * obj.scaleX)}x${Math.round(obj.height * obj.scaleY)}</small>
+                <div class="drag-handle">
+                    <i class="fas fa-grip-vertical"></i>
                 </div>
-                <button class="control-btn delete-layer" style="font-size: 0.9rem; max-width: 40px;">
-                    <i class="fas fa-trash"></i>
-                </button>
+                <div class="layer-info">
+                    <div class="layer-name">Imagem ${index}</div>
+                    <div class="layer-size">${Math.round(obj.width * obj.scaleX)}x${Math.round(obj.height * obj.scaleY)}</div>
+                </div>
+                <div class="layer-actions">
+                    <button class="action-btn delete-btn" title="Excluir">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
             `;
             
+            layerItem.prepend(thumbnail);
+            
+            // Evento para selecionar a camada
             layerItem.addEventListener('click', (e) => {
-                if (e.target.closest('.delete-layer')) return;
+                if (e.target.closest('.action-btn')) return;
+                
+                // Remove a classe 'active' de todos os itens
+                document.querySelectorAll('.layer-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Adiciona a classe 'active' ao item clicado
+                layerItem.classList.add('active');
+                
+                // Seleciona o objeto no canvas
                 canvas.setActiveObject(obj);
+                canvas.renderAll();
             });
             
-            const deleteBtn = layerItem.querySelector('.delete-layer');
+            // Evento para o botão de deletar
+            const deleteBtn = layerItem.querySelector('.delete-btn');
             deleteBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 canvas.remove(obj);
                 layerItem.remove();
+                
+                // Se não houver mais camadas, mostra o estado vazio
+                if (layersList.children.length === 0) {
+                    layersList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-layer-group"></i>
+                            <p>Nenhuma imagem adicionada</p>
+                        </div>
+                    `;
+                }
+                
+                showToast('Imagem removida');
+            });
+            
+            // Eventos de arrastar para reordenar camadas
+            layerItem.addEventListener('dragstart', (e) => {
+                isDraggingLayer = true;
+                dragStartIndex = Array.from(layersList.children).indexOf(layerItem);
+                draggedElement = layerItem;
+                layerItem.style.opacity = '0.5';
+                
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', layerItem.innerHTML);
+            });
+            
+            layerItem.addEventListener('dragend', (e) => {
+                isDraggingLayer = false;
+                layerItem.style.opacity = '1';
+                
+                // Remove todos os indicadores de drop
+                document.querySelectorAll('.drop-indicator').forEach(indicator => {
+                    indicator.classList.remove('visible');
+                });
+                
+                // Atualiza a ordem no canvas
+                updateCanvasOrder();
+            });
+            
+            layerItem.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                return false;
+            });
+            
+            layerItem.addEventListener('dragenter', (e) => {
+                e.preventDefault();
+                layerItem.classList.add('drag-over');
+            });
+            
+            layerItem.addEventListener('dragleave', (e) => {
+                layerItem.classList.remove('drag-over');
+            });
+            
+            layerItem.addEventListener('drop', (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                
+                if (draggedElement !== layerItem) {
+                    const dragEndIndex = Array.from(layersList.children).indexOf(layerItem);
+                    
+                    // Move o elemento na lista
+                    if (dragEndIndex > dragStartIndex) {
+                        layersList.insertBefore(draggedElement, layerItem.nextSibling);
+                    } else {
+                        layersList.insertBefore(draggedElement, layerItem);
+                    }
+                    
+                    // Atualiza a ordem no canvas
+                    updateCanvasOrder();
+                }
+                
+                return false;
             });
             
             layersList.appendChild(layerItem);
         }
 
+        // Atualiza a ordem dos objetos no canvas baseado na ordem da lista
+        function updateCanvasOrder() {
+            const layers = Array.from(layersList.querySelectorAll('.layer-item'));
+            
+            // Remove todos os objetos do canvas
+            const objects = canvas.getObjects();
+            canvas.remove(...objects);
+            
+            // Adiciona os objetos de volta na ordem da lista (do último para o primeiro)
+            // O último na lista fica por cima, o primeiro por baixo
+            for (let i = layers.length - 1; i >= 0; i--) {
+                const layerId = layers[i].getAttribute('data-id');
+                const obj = objects.find(o => o.id === layerId);
+                if (obj) {
+                    canvas.add(obj);
+                }
+            }
+            
+            canvas.renderAll();
+            showToast('Ordem das camadas atualizada');
+        }
+
+        // Função para mostrar notificações
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // Evento quando um objeto é selecionado no canvas
+        canvas.on('selection:created', (e) => {
+            const selectedObj = e.selected[0];
+            
+            // Atualiza a seleção na lista de camadas
+            document.querySelectorAll('.layer-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-id') === selectedObj.id) {
+                    item.classList.add('active');
+                    
+                    // Garante que o item visível está na view
+                    item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            });
+        });
+
+        canvas.on('selection:cleared', (e) => {
+            // Remove a seleção de todas as camadas
+            document.querySelectorAll('.layer-item').forEach(item => {
+                item.classList.remove('active');
+            });
+        });
+
+        // Download da imagem
         downloadBtn.addEventListener('click', () => {
+            if (canvas.getObjects().length === 0) {
+                showToast('Adicione uma imagem primeiro!');
+                return;
+            }
+            
             const link = document.createElement('a');
             link.download = 'minha-foto-editada.png';
             link.href = canvas.toDataURL({
                 format: 'png',
-                quality: 0.8
+                quality: 0.9
             });
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            
+            showToast('Imagem baixada com sucesso!');
         });
 
-        // Inicialização do tema
+        // Inicialização
         canvas.setBackgroundColor('#1e1e1e', canvas.renderAll.bind(canvas));
     </script>
 </body>
