@@ -87,34 +87,6 @@
             touch-action: none;
         }
 
-        /* Preview Area */
-        .preview-container {
-            background-color: var(--bg-tertiary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-            position: relative;
-            margin: 10px 15px;
-            border-radius: 8px;
-        }
-
-        #preview-canvas {
-            background-color: transparent;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            max-width: 100%;
-            border: 1px dashed var(--border-color);
-        }
-
-        .preview-label {
-            position: absolute;
-            top: 5px;
-            left: 10px;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
         /* Mobile Controls */
         .mobile-controls {
             background-color: var(--bg-secondary);
@@ -349,40 +321,6 @@
             background: var(--bg-tertiary);
             border-radius: 3px;
         }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            background-color: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .tab {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .tab.active {
-            color: var(--accent-color);
-            border-bottom: 2px solid var(--accent-color);
-        }
-        
-        /* Instructions */
-        .instructions {
-            padding: 10px 15px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            background-color: var(--bg-secondary);
-            border-top: 1px solid var(--border-color);
-        }
     </style>
 </head>
 <body>
@@ -393,22 +331,8 @@
         </button>
     </div>
 
-    <div class="tabs">
-        <button class="tab active" id="editTab">Editar</button>
-        <button class="tab" id="previewTab">Visualizar</button>
-    </div>
-
-    <div class="canvas-container" id="editContainer">
+    <div class="canvas-container">
         <canvas id="main-canvas" width="400" height="400"></canvas>
-    </div>
-
-    <div class="preview-container" id="previewContainer" style="display: none;">
-        <div class="preview-label">Prévia (fundo transparente)</div>
-        <canvas id="preview-canvas" width="400" height="400"></canvas>
-    </div>
-
-    <div class="instructions">
-        <i class="fas fa-info-circle"></i> A imagem será baixada com fundo transparente
     </div>
 
     <div class="layers-panel" id="layersPanel">
@@ -458,30 +382,15 @@
             selectionBorderColor: '#4cc9f0',
             selectionLineWidth: 2
         });
-
-        // Canvas para exportação com fundo transparente
-        const exportCanvas = new fabric.Canvas(null, {
-            backgroundColor: null // Fundo totalmente transparente
-        });
         
         // Ajustar canvas para mobile
         function resizeCanvas() {
             const container = document.querySelector('.canvas-container');
-            const previewContainer = document.querySelector('.preview-container');
             const size = Math.min(container.clientWidth - 30, 400);
-            
             canvas.setDimensions({
                 width: size,
                 height: size
             });
-            
-            // Atualizar o canvas de pré-visualização
-            const previewCanvas = document.getElementById('preview-canvas');
-            if (previewCanvas) {
-                previewCanvas.width = size;
-                previewCanvas.height = size;
-            }
-            
             canvas.renderAll();
         }
         
@@ -503,10 +412,6 @@
         const addImageBtn = document.getElementById('addImageBtn');
         const downloadBtn = document.getElementById('downloadBtn');
         const toast = document.getElementById('toast');
-        const editTab = document.getElementById('editTab');
-        const previewTab = document.getElementById('previewTab');
-        const editContainer = document.getElementById('editContainer');
-        const previewContainer = document.getElementById('previewContainer');
 
         // Controle do Tema
         const themeToggle = document.getElementById('themeToggle');
@@ -522,22 +427,6 @@
                 iconTheme.className = 'fas fa-sun';
                 canvas.setBackgroundColor('#ffffff', canvas.renderAll.bind(canvas));
             }
-        });
-
-        // Controle das Abas
-        editTab.addEventListener('click', () => {
-            editTab.classList.add('active');
-            previewTab.classList.remove('active');
-            editContainer.style.display = 'flex';
-            previewContainer.style.display = 'none';
-        });
-
-        previewTab.addEventListener('click', () => {
-            previewTab.classList.add('active');
-            editTab.classList.remove('active');
-            editContainer.style.display = 'none';
-            previewContainer.style.display = 'flex';
-            updatePreview();
         });
 
         // Controle do Painel de Camadas
@@ -787,46 +676,6 @@
             showToast('Ordem das camadas atualizada');
         }
 
-        // Atualiza a pré-visualização com fundo transparente
-        function updatePreview() {
-            const previewCanvas = document.getElementById('preview-canvas');
-            const ctx = previewCanvas.getContext('2d');
-            
-            // Limpa o canvas
-            ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
-            
-            // Cria um fundo quadriculado para visualizar transparência
-            const size = 10;
-            for (let x = 0; x < previewCanvas.width; x += size) {
-                for (let y = 0; y < previewCanvas.height; y += size) {
-                    ctx.fillStyle = (x / size + y / size) % 2 === 0 ? '#2d2d2d' : '#3d3d3d';
-                    ctx.fillRect(x, y, size, size);
-                }
-            }
-            
-            // Desenha todos os objetos do canvas principal
-            const objects = canvas.getObjects();
-            objects.forEach(obj => {
-                // Clona o objeto para evitar problemas de referência
-                const objData = obj.toObject();
-                fabric.util.enlivenObjects([objData], (enlivenedObjects) => {
-                    const clonedObj = enlivenedObjects[0];
-                    clonedObj.set({
-                        left: obj.left,
-                        top: obj.top,
-                        scaleX: obj.scaleX,
-                        scaleY: obj.scaleY,
-                        angle: obj.angle,
-                        originX: obj.originX,
-                        originY: obj.originY
-                    });
-                    
-                    // Renderiza o objeto no canvas de pré-visualização
-                    clonedObj.render(ctx);
-                });
-            });
-        }
-
         // Função para mostrar notificações
         function showToast(message) {
             toast.textContent = message;
@@ -860,22 +709,18 @@
             });
         });
 
-        // Evento quando um objeto é modificado no canvas
-        canvas.on('object:modified', (e) => {
-            // Atualiza a pré-visualização quando um objeto é modificado
-            if (previewContainer.style.display !== 'none') {
-                updatePreview();
-            }
-        });
-
-        // Download da imagem com fundo transparente
+        // Download da imagem com fundo transparente e sem contorno
         downloadBtn.addEventListener('click', () => {
             if (canvas.getObjects().length === 0) {
                 showToast('Adicione uma imagem primeiro!');
                 return;
             }
             
-            // Calcula o tamanho necessário para a imagem exportada
+            // Criar um canvas temporário para exportação
+            const tempCanvas = document.createElement('canvas');
+            const ctx = tempCanvas.getContext('2d');
+            
+            // Calcular o tamanho necessário
             const objects = canvas.getObjects();
             let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
             
@@ -887,48 +732,52 @@
                 maxY = Math.max(maxY, boundingRect.top + boundingRect.height);
             });
             
-            // Adiciona uma margem de 10px
-            const margin = 10;
+            // Adicionar uma pequena margem
+            const margin = 5;
             const width = maxX - minX + margin * 2;
             const height = maxY - minY + margin * 2;
             
-            // Configura o canvas de exportação com o tamanho calculado
-            exportCanvas.setDimensions({ width, height });
-            exportCanvas.clear(); // Limpa qualquer conteúdo anterior
+            tempCanvas.width = width;
+            tempCanvas.height = height;
             
-            // Adiciona cada objeto ao canvas de exportação com posições ajustadas
+            // Manter o fundo transparente
+            ctx.clearRect(0, 0, width, height);
+            
+            // Desenhar cada objeto no canvas temporário
             objects.forEach(obj => {
-                const objData = obj.toObject();
-                fabric.util.enlivenObjects([objData], (enlivenedObjects) => {
-                    const clonedObj = enlivenedObjects[0];
-                    clonedObj.set({
-                        left: obj.left - minX + margin,
-                        top: obj.top - minY + margin,
-                        scaleX: obj.scaleX,
-                        scaleY: obj.scaleY,
-                        angle: obj.angle,
-                        originX: obj.originX,
-                        originY: obj.originY
-                    });
-                    
-                    exportCanvas.add(clonedObj);
-                    
-                    // Quando todos os objetos forem adicionados, faz o download
-                    if (exportCanvas.getObjects().length === objects.length) {
-                        const link = document.createElement('a');
-                        link.download = 'minha-foto-editada.png';
-                        link.href = exportCanvas.toDataURL({
-                            format: 'png',
-                            quality: 0.95
-                        });
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                        
-                        showToast('Imagem baixada com fundo transparente!');
-                    }
-                });
+                // Salvar o contexto
+                ctx.save();
+                
+                // Aplicar transformações
+                ctx.translate(obj.left - minX + margin, obj.top - minY + margin);
+                ctx.rotate(obj.angle * Math.PI / 180);
+                ctx.scale(obj.scaleX, obj.scaleY);
+                
+                // Desenhar a imagem
+                ctx.drawImage(
+                    obj._element,
+                    -obj.width / 2,
+                    -obj.height / 2,
+                    obj.width,
+                    obj.height
+                );
+                
+                // Restaurar o contexto
+                ctx.restore();
             });
+            
+            // Criar o link de download
+            const link = document.createElement('a');
+            link.download = 'minha-foto-editada.png';
+            link.href = tempCanvas.toDataURL({
+                format: 'png',
+                quality: 0.95
+            });
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast('Imagem baixada com fundo transparente!');
         });
 
         // Inicialização
