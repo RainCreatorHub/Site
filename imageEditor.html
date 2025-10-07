@@ -3,132 +3,355 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor com Camadas</title>
+    <title>Editor de Fotos - Mobile Dark</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            /* Cores do Tema Claro (como fallback) */
+            --bg-primary: #f0f2f5;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e4e6eb;
+            --text-primary: #1c1e21;
+            --text-secondary: #65676b;
+            --accent-color: #4361ee;
+            --border-color: #dddfe2;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tema Escuro */
+        body.dark-theme {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2d2d2d;
+            --text-primary: #e4e6eb;
+            --text-secondary: #b0b3b8;
+            --accent-color: #4cc9f0;
+            --border-color: #3e4042;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            /* Garante que a altura ocupe a tela inteira */
+            min-height: 100vh;
+            /* Suaviza a transição de cores */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Container Principal para Mobile */
         .app-container {
             display: flex;
-            height: 100vh;
-            font-family: 'Segoe UI', sans-serif;
+            flex-direction: column;
+            min-height: 100vh;
+            max-width: 100%;
+            overflow-x: hidden;
         }
-        .editor-area {
+
+        /* Cabeçalho */
+        .header {
+            background-color: var(--bg-secondary);
+            padding: 15px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            background-color: var(--bg-tertiary);
+        }
+
+        /* Área do Canvas */
+        .canvas-container {
             flex-grow: 1;
-            padding: 20px;
-            background: #f5f5f5;
+            background-color: var(--bg-tertiary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            position: relative;
         }
-        #camera {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+        #main-canvas {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            /* O canvas será responsivo */
+            max-width: 100%;
+            height: auto;
         }
+
+        /* Painel de Controles Móveis */
+        .mobile-controls {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 15px 10px;
+            position: sticky;
+            bottom: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .control-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            flex: 1;
+            max-width: 80px;
+        }
+
+        .control-btn:hover,
+        .control-btn:active {
+            background-color: var(--bg-tertiary);
+            color: var(--accent-color);
+        }
+
+        .control-btn i {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        /* Painel de Camadas para Mobile */
         .layers-panel {
-            width: 300px;
-            background: white;
-            border-left: 1px solid #eee;
-            padding: 20px;
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .layers-panel.active {
+            max-height: 40vh;
             overflow-y: auto;
         }
+
+        .panel-header {
+            padding: 12px 15px;
+            background-color: var(--bg-tertiary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .layer-item {
             display: flex;
             align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background 0.3s;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
         }
-        .layer-item:hover {
-            background: #f9f9f9;
-        }
-        .layer-item.active {
-            background: #e3f2fd;
-            border-left: 4px solid #2196F3;
-        }
+
         .layer-thumb {
             width: 40px;
             height: 40px;
-            border-radius: 4px;
-            background: #eee;
+            border-radius: 6px;
+            background-color: var(--bg-tertiary);
             margin-right: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            color: #777;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
         }
-        .layer-name {
-            flex-grow: 1;
+
+        /* Torna o site verdadeiramente responsivo */
+        @media (min-width: 768px) {
+            /* Este CSS garante que, mesmo em telas maiores, o layout mobile será priorizado */
+            .app-container {
+                max-width: 480px; /* Limita a largura máxima, comum em dispositivos móveis */
+                margin: 0 auto; /* Centraliza na tela */
+                border-left: 1px solid var(--border-color);
+                border-right: 1px solid var(--border-color);
+            }
         }
-        .auto-up-btn {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
+
+        /* Estilização da barra de rolagem para o painel de camadas */
+        .layers-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .layers-panel::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        .layers-panel::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 3px;
         }
     </style>
 </head>
-<body>
+<body class="dark-theme">
     <div class="app-container">
-        <div class="editor-area">
-            <canvas id="camera" width="800" height="600"></canvas>
+        <div class="header">
+            <h1><i class="fas fa-camera me-2"></i>PhotoEditor</h1>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
         </div>
-        
-        <div class="layers-panel">
-            <h3>Camadas</h3>
-            <div id="layersList">
-                <!-- As camadas serão inseridas aqui pelo JavaScript -->
+
+        <div class="canvas-container">
+            <canvas id="main-canvas" width="400" height="500"></canvas>
+        </div>
+
+        <div class="layers-panel" id="layersPanel">
+            <div class="panel-header">
+                <span>Camadas</span>
+                <button id="closeLayers" class="control-btn">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <button id="autoUpButton" class="auto-up-btn">Auto Up ON</button>
+            <div id="layersList">
+                <!-- As camadas serão listadas aqui via JavaScript -->
+            </div>
+        </div>
+
+        <div class="mobile-controls">
+            <button class="control-btn" id="addImageBtn">
+                <i class="fas fa-image"></i>
+                <span>Add</span>
+            </button>
+            <button class="control-btn" id="layersBtn">
+                <i class="fas fa-layer-group"></i>
+                <span>Camadas</span>
+            </button>
+            <button class="control-btn" id="transformBtn">
+                <i class="fas fa-expand-alt"></i>
+                <span>Transformar</span>
+            </button>
+            <button class="control-btn" id="downloadBtn">
+                <i class="fas fa-download"></i>
+                <span>Baixar</span>
+            </button>
         </div>
     </div>
 
+    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+
     <script>
-        // Inicializa o canvas
-        const canvas = new fabric.Canvas('camera');
-        let autoUpEnabled = true;
+        // Inicialização do Canvas
+        const canvas = new fabric.Canvas('main-canvas', {
+            backgroundColor: '#1e1e1e'
+        });
+        
+        // Ajustar canvas para mobile
+        function resizeCanvas() {
+            const container = document.querySelector('.canvas-container');
+            canvas.setDimensions({
+                width: Math.min(container.clientWidth - 20, 400),
+                height: Math.min(container.clientHeight - 20, 500)
+            });
+            canvas.renderAll();
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Controle do Tema Escuro/Claro
+        const themeToggle = document.getElementById('themeToggle');
+        const iconTheme = themeToggle.querySelector('i');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            
+            if (document.body.classList.contains('dark-theme')) {
+                iconTheme.className = 'fas fa-moon';
+                canvas.setBackgroundColor('#1e1e1e', canvas.renderAll.bind(canvas));
+            } else {
+                iconTheme.className = 'fas fa-sun';
+                canvas.setBackgroundColor('#ffffff', canvas.renderAll.bind(canvas));
+            }
+        });
+
+        // Controle do Painel de Camadas
+        const layersPanel = document.getElementById('layersPanel');
+        const layersBtn = document.getElementById('layersBtn');
+        const closeLayers = document.getElementById('closeLayers');
+        
+        layersBtn.addEventListener('click', () => {
+            layersPanel.classList.add('active');
+        });
+        
+        closeLayers.addEventListener('click', () => {
+            layersPanel.classList.remove('active');
+        });
+
+        // Gerenciamento de Imagens e Camadas (exemplo simplificado)
+        const fileInput = document.getElementById('fileInput');
+        const addImageBtn = document.getElementById('addImageBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const layersList = document.getElementById('layersList');
         let layerCount = 0;
 
-        // Referências aos elementos do DOM
-        const layersList = document.getElementById('layersList');
-        const autoUpButton = document.getElementById('autoUpButton');
+        addImageBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
 
-        // Função para adicionar uma nova imagem
-        function addImageToCanvas(url) {
-            fabric.Image.fromURL(url, (img) => {
-                layerCount++;
-                
-                // Configurações da imagem
-                img.set({
-                    left: 100 + (layerCount * 20),
-                    top: 100 + (layerCount * 20),
-                    angle: 0,
-                    id: `layer_${layerCount}`, // ID único para a camada
-                    cornerStyle: 'circle',
-                    cornerColor: '#2196F3',
-                    transparentCorners: false
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                fabric.Image.fromURL(event.target.result, (img) => {
+                    layerCount++;
+                    
+                    img.set({
+                        left: 50,
+                        top: 50,
+                        angle: 0,
+                        scaleX: 0.5,
+                        scaleY: 0.5,
+                        id: `layer_${layerCount}`,
+                        cornerStyle: 'circle',
+                        cornerColor: '#4361ee',
+                        cornerSize: 12,
+                        transparentCorners: false
+                    });
+
+                    canvas.add(img);
+                    addLayerToList(img, layerCount);
+                    canvas.setActiveObject(img);
+                    
+                    // Fecha o painel de camadas após adicionar uma imagem
+                    layersPanel.classList.add('active');
                 });
+            };
+            reader.readAsDataURL(file);
+        });
 
-                // Adiciona ao canvas
-                canvas.add(img);
-                
-                // Se Auto Up estiver ativado, traz para frente
-                if(autoUpEnabled) {
-                    img.bringToFront();
-                }
-                
-                // Atualiza a lista de camadas
-                addLayerToList(img, layerCount);
-                
-                // Renderiza o canvas
-                canvas.renderAll();
-                
-                // Seleciona a nova imagem
-                canvas.setActiveObject(img);
-            });
-        }
-
-        // Função para adicionar item na lista de camadas
         function addLayerToList(obj, index) {
             const layerItem = document.createElement('div');
             layerItem.className = 'layer-item';
@@ -136,33 +359,20 @@
             
             layerItem.innerHTML = `
                 <div class="layer-thumb">Img ${index}</div>
-                <div class="layer-name">Imagem ${index}</div>
-                <button class="delete-layer">×</button>
+                <div style="flex-grow: 1;">
+                    <div style="font-weight: 500;">Imagem ${index}</div>
+                    <small style="color: var(--text-secondary);">${Math.round(obj.width * obj.scaleX)}x${Math.round(obj.height * obj.scaleY)}</small>
+                </div>
+                <button class="control-btn delete-layer" style="font-size: 0.9rem; max-width: 40px;">
+                    <i class="fas fa-trash"></i>
+                </button>
             `;
             
-            // Evento para selecionar a camada
             layerItem.addEventListener('click', (e) => {
-                if(e.target.classList.contains('delete-layer')) return;
-                
-                // Remove a classe 'active' de todos os itens
-                document.querySelectorAll('.layer-item').forEach(item => {
-                    item.classList.remove('active');
-                });
-                
-                // Adiciona a classe 'active' ao item clicado
-                layerItem.classList.add('active');
-                
-                // Seleciona o objeto no canvas
+                if (e.target.closest('.delete-layer')) return;
                 canvas.setActiveObject(obj);
-                
-                // Se Auto Up estiver ativado, traz para frente
-                if(autoUpEnabled) {
-                    obj.bringToFront();
-                    canvas.renderAll();
-                }
             });
             
-            // Evento para o botão de deletar
             const deleteBtn = layerItem.querySelector('.delete-layer');
             deleteBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -173,36 +383,20 @@
             layersList.appendChild(layerItem);
         }
 
-        // Evento para o botão Auto Up
-        autoUpButton.addEventListener('click', () => {
-            autoUpEnabled = !autoUpEnabled;
-            autoUpButton.textContent = autoUpEnabled ? 'Auto Up ON' : 'Auto Up OFF';
-            autoUpButton.style.background = autoUpEnabled ? '#4CAF50' : '#f44336';
-        });
-
-        // Evento quando um objeto é selecionado no canvas
-        canvas.on('selection:created', (e) => {
-            const selectedObj = e.selected[0];
-            
-            // Atualiza a seleção na lista de camadas
-            document.querySelectorAll('.layer-item').forEach(item => {
-                item.classList.remove('active');
-                if(item.getAttribute('data-id') === selectedObj.id) {
-                    item.classList.add('active');
-                }
+        downloadBtn.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'minha-foto-editada.png';
+            link.href = canvas.toDataURL({
+                format: 'png',
+                quality: 0.8
             });
-            
-            // Se Auto Up estiver ativado, traz para frente
-            if(autoUpEnabled && selectedObj) {
-                selectedObj.bringToFront();
-                canvas.renderAll();
-            }
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         });
 
-        // Adiciona imagens de exemplo (substitua por seu próprio mecanismo de upload)
-        addImageToCanvas('https://via.placeholder.com/200x150/FF6B6B/white?text=Img1');
-        addImageToCanvas('https://via.placeholder.com/200x150/4ECDC4/white?text=Img2');
-        addImageToCanvas('https://via.placeholder.com/200x150/45B7D1/white?text=Img3');
+        // Inicialização do tema
+        canvas.setBackgroundColor('#1e1e1e', canvas.renderAll.bind(canvas));
     </script>
 </body>
 </html>
