@@ -3,107 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor de Fotos Avançado</title>
+    <title>Editor com Camadas</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3f37c9;
-            --dark-color: #1d3557;
-            --light-color: #f8f9fa;
-            --success-color: #4cc9f0;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-        
         .app-container {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            margin: 20px auto;
-            max-width: 1400px;
+            display: flex;
+            height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
         }
-        
-        .header {
-            background: var(--dark-color);
-            color: white;
-            padding: 15px 25px;
-        }
-        
         .editor-area {
-            padding: 20px;
-            background: #f8f9fa;
-            min-height: 500px;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        #canvas-container {
             flex-grow: 1;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            margin-bottom: 15px;
+            padding: 20px;
+            background: #f5f5f5;
         }
-        
         #camera {
-            width: 100%;
-            height: 100%;
-        }
-        
-        .tools-panel {
             background: white;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        
         .layers-panel {
+            width: 300px;
             background: white;
-            border-radius: 10px;
-            padding: 15px;
-            height: 100%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 1px solid #eee;
+            padding: 20px;
+            overflow-y: auto;
         }
-        
-        .carousel-item {
-            padding: 10px;
-        }
-        
-        .tool-btn {
-            width: 70px;
-            height: 70px;
-            margin: 5px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: var(--light-color);
-            border: none;
-            transition: all 0.3s;
-        }
-        
-        .tool-btn:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-5px);
-        }
-        
-        .tool-btn i {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-        
         .layer-item {
             display: flex;
             align-items: center;
@@ -112,385 +35,131 @@
             cursor: pointer;
             transition: background 0.3s;
         }
-        
         .layer-item:hover {
-            background: #f0f0f0;
+            background: #f9f9f9;
         }
-        
         .layer-item.active {
             background: #e3f2fd;
-            border-left: 4px solid var(--primary-color);
+            border-left: 4px solid #2196F3;
         }
-        
         .layer-thumb {
             width: 40px;
             height: 40px;
-            border-radius: 5px;
-            background: #ddd;
+            border-radius: 4px;
+            background: #eee;
             margin-right: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 12px;
             color: #777;
         }
-        
-        .carousel-control-prev, .carousel-control-next {
-            width: 5%;
+        .layer-name {
+            flex-grow: 1;
         }
-        
-        .carousel-control-prev-icon, .carousel-control-next-icon {
-            background-color: var(--primary-color);
-            border-radius: 50%;
-            padding: 15px;
-        }
-        
-        .mobile-controls {
-            display: none;
-        }
-        
-        @media (max-width: 768px) {
-            .desktop-controls {
-                display: none;
-            }
-            
-            .mobile-controls {
-                display: block;
-            }
-            
-            .mobile-toolbar {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: white;
-                padding: 10px;
-                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-                z-index: 1000;
-            }
-            
-            .mobile-tool-btn {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                background: none;
-                border: none;
-                font-size: 12px;
-            }
-            
-            .mobile-tool-btn i {
-                font-size: 20px;
-                margin-bottom: 5px;
-            }
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-        }
-        
-        .carousel-indicators button {
-            background-color: var(--primary-color);
+        .auto-up-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <div class="header d-flex justify-content-between align-items-center">
-            <h1 class="h3 mb-0"><i class="fas fa-camera me-2"></i>PhotoEditor Pro</h1>
-            <div>
-                <button class="btn btn-outline-light btn-sm me-2"><i class="fas fa-question-circle me-1"></i> Ajuda</button>
-                <button class="btn btn-light btn-sm"><i class="fas fa-cog me-1"></i> Configurações</button>
-            </div>
+        <div class="editor-area">
+            <canvas id="camera" width="800" height="600"></canvas>
         </div>
         
-        <div class="container-fluid p-0">
-            <div class="row g-0">
-                <!-- Área principal do editor -->
-                <div class="col-lg-9 col-md-8">
-                    <div class="editor-area">
-                        <div id="canvas-container">
-                            <canvas id="camera" width="800" height="500"></canvas>
-                        </div>
-                        
-                        <!-- Carrossel de opções -->
-                        <div class="tools-panel">
-                            <div id="toolsCarousel" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#toolsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                    <button type="button" data-bs-target="#toolsCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                    <button type="button" data-bs-target="#toolsCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                                </div>
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <div class="d-flex justify-content-around flex-wrap">
-                                            <button class="tool-btn" id="addImageBtn">
-                                                <i class="fas fa-file-image"></i>
-                                                <span>Add Imagem</span>
-                                            </button>
-                                            <button class="tool-btn" id="cropBtn">
-                                                <i class="fas fa-crop-alt"></i>
-                                                <span>Cortar</span>
-                                            </button>
-                                            <button class="tool-btn" id="rotateBtn">
-                                                <i class="fas fa-redo"></i>
-                                                <span>Girar</span>
-                                            </button>
-                                            <button class="tool-btn" id="flipHBtn">
-                                                <i class="fas fa-arrows-alt-h"></i>
-                                                <span>Inverter H</span>
-                                            </button>
-                                            <button class="tool-btn" id="flipVBtn">
-                                                <i class="fas fa-arrows-alt-v"></i>
-                                                <span>Inverter V</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <div class="d-flex justify-content-around flex-wrap">
-                                            <button class="tool-btn" id="brightnessBtn">
-                                                <i class="fas fa-sun"></i>
-                                                <span>Brilho</span>
-                                            </button>
-                                            <button class="tool-btn" id="contrastBtn">
-                                                <i class="fas fa-circle"></i>
-                                                <span>Contraste</span>
-                                            </button>
-                                            <button class="tool-btn" id="saturationBtn">
-                                                <i class="fas fa-adjust"></i>
-                                                <span>Saturação</span>
-                                            </button>
-                                            <button class="tool-btn" id="blurBtn">
-                                                <i class="fas fa-tint"></i>
-                                                <span>Desfoque</span>
-                                            </button>
-                                            <button class="tool-btn" id="filterBtn">
-                                                <i class="fas fa-filter"></i>
-                                                <span>Filtros</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <div class="d-flex justify-content-around flex-wrap">
-                                            <button class="tool-btn" id="textBtn">
-                                                <i class="fas fa-font"></i>
-                                                <span>Texto</span>
-                                            </button>
-                                            <button class="tool-btn" id="shapeBtn">
-                                                <i class="fas fa-square"></i>
-                                                <span>Formas</span>
-                                            </button>
-                                            <button class="tool-btn" id="drawBtn">
-                                                <i class="fas fa-pencil-alt"></i>
-                                                <span>Desenhar</span>
-                                            </button>
-                                            <button class="tool-btn" id="stickerBtn">
-                                                <i class="fas fa-smile"></i>
-                                                <span>Stickers</span>
-                                            </button>
-                                            <button class="tool-btn" id="resetBtn">
-                                                <i class="fas fa-undo"></i>
-                                                <span>Resetar</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#toolsCarousel" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Anterior</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#toolsCarousel" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Próximo</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Painel de camadas -->
-                <div class="col-lg-3 col-md-4 desktop-controls">
-                    <div class="layers-panel">
-                        <h5 class="d-flex justify-content-between align-items-center">
-                            <span><i class="fas fa-layer-group me-2"></i>Camadas</span>
-                            <button class="btn btn-sm btn-primary" id="addLayerBtn">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </h5>
-                        <div class="mt-3">
-                            <div id="layersList">
-                                <!-- As camadas serão adicionadas aqui dinamicamente -->
-                                <div class="text-center text-muted py-4">
-                                    <i class="fas fa-layer-group fa-2x mb-2"></i>
-                                    <p>Nenhuma camada adicionada</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-4">
-                            <h6><i class="fas fa-sliders-h me-2"></i>Controles</h6>
-                            <div class="btn-group w-100 mt-2" role="group">
-                                <button type="button" class="btn btn-outline-primary" id="upButton">
-                                    <i class="fas fa-arrow-up"></i> Frente
-                                </button>
-                                <button type="button" class="btn btn-outline-primary" id="downButton">
-                                    <i class="fas fa-arrow-down"></i> Trás
-                                </button>
-                            </div>
-                            <button class="btn btn-success w-100 mt-3" id="downloadButton">
-                                <i class="fas fa-download me-2"></i> Finalizar e Baixar
-                            </button>
-                        </div>
-                    </div>
-                </div>
+        <div class="layers-panel">
+            <h3>Camadas</h3>
+            <div id="layersList">
+                <!-- As camadas serão inseridas aqui pelo JavaScript -->
             </div>
-        </div>
-        
-        <!-- Controles para mobile -->
-        <div class="mobile-controls">
-            <div class="mobile-toolbar">
-                <div class="d-flex justify-content-around">
-                    <button class="mobile-tool-btn text-primary" id="mobileLayersBtn">
-                        <i class="fas fa-layer-group"></i>
-                        <span>Camadas</span>
-                    </button>
-                    <button class="mobile-tool-btn" id="mobileAddBtn">
-                        <i class="fas fa-plus"></i>
-                        <span>Adicionar</span>
-                    </button>
-                    <button class="mobile-tool-btn" id="mobileTransformBtn">
-                        <i class="fas fa-vector-square"></i>
-                        <span>Transformar</span>
-                    </button>
-                    <button class="mobile-tool-btn" id="mobileDownloadBtn">
-                        <i class="fas fa-download"></i>
-                        <span>Baixar</span>
-                    </button>
-                </div>
-            </div>
+            <button id="autoUpButton" class="auto-up-btn">Auto Up ON</button>
         </div>
     </div>
 
-    <input type="file" id="fileInput" accept="image/*" style="display: none;">
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Inicializa o canvas do Fabric
-        const canvas = new fabric.Canvas('camera', {
-            backgroundColor: '#f8f9fa'
-        });
-        
-        // Ajusta o canvas para preencher o container
-        function resizeCanvas() {
-            const container = document.getElementById('canvas-container');
-            canvas.setDimensions({
-                width: container.clientWidth,
-                height: container.clientHeight
-            });
-            canvas.renderAll();
-        }
-        
-        // Redimensiona o canvas quando a janela é redimensionada
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-        
-        let objetosNoCanvas = [];
+        // Inicializa o canvas
+        const canvas = new fabric.Canvas('camera');
+        let autoUpEnabled = true;
         let layerCount = 0;
-        let objetoSelecionado = null;
 
         // Referências aos elementos do DOM
-        const fileInput = document.getElementById('fileInput');
-        const upButton = document.getElementById('upButton');
-        const downButton = document.getElementById('downButton');
-        const downloadButton = document.getElementById('downloadButton');
-        const addImageBtn = document.getElementById('addImageBtn');
-        const addLayerBtn = document.getElementById('addLayerBtn');
         const layersList = document.getElementById('layersList');
-        const rotateBtn = document.getElementById('rotateBtn');
-        const flipHBtn = document.getElementById('flipHBtn');
-        const flipVBtn = document.getElementById('flipVBtn');
-        const resetBtn = document.getElementById('resetBtn');
+        const autoUpButton = document.getElementById('autoUpButton');
 
-        // Evento para carregar imagem
-        function loadImage(file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                fabric.Image.fromURL(event.target.result, (img) => {
-                    // Define um ID único e posição para a nova imagem
-                    img.set({
-                        left: 100 + (objetosNoCanvas.length * 20),
-                        top: 100 + (objetosNoCanvas.length * 20),
-                        angle: 0,
-                        id: `imagem_${Date.now()}`,
-                        cornerStyle: 'circle',
-                        cornerColor: '#4361ee',
-                        cornerSize: 12,
-                        transparentCorners: false
-                    });
-
-                    // Adiciona a imagem ao canvas
-                    canvas.add(img);
-                    objetosNoCanvas.push(img);
-                    layerCount++;
-                    
-                    // Adiciona a camada à lista
-                    addLayerToList(img, layerCount);
-                    
-                    // Ativa os botões
-                    upButton.disabled = false;
-                    downButton.disabled = false;
-                    downloadButton.disabled = false;
-
-                    canvas.renderAll();
+        // Função para adicionar uma nova imagem
+        function addImageToCanvas(url) {
+            fabric.Image.fromURL(url, (img) => {
+                layerCount++;
+                
+                // Configurações da imagem
+                img.set({
+                    left: 100 + (layerCount * 20),
+                    top: 100 + (layerCount * 20),
+                    angle: 0,
+                    id: `layer_${layerCount}`, // ID único para a camada
+                    cornerStyle: 'circle',
+                    cornerColor: '#2196F3',
+                    transparentCorners: false
                 });
-            };
-            reader.readAsDataURL(file);
+
+                // Adiciona ao canvas
+                canvas.add(img);
+                
+                // Se Auto Up estiver ativado, traz para frente
+                if(autoUpEnabled) {
+                    img.bringToFront();
+                }
+                
+                // Atualiza a lista de camadas
+                addLayerToList(img, layerCount);
+                
+                // Renderiza o canvas
+                canvas.renderAll();
+                
+                // Seleciona a nova imagem
+                canvas.setActiveObject(img);
+            });
         }
 
-        // Adiciona uma camada à lista
+        // Função para adicionar item na lista de camadas
         function addLayerToList(obj, index) {
-            // Remove o placeholder se existir
-            if (layersList.querySelector('.text-muted')) {
-                layersList.innerHTML = '';
-            }
-            
             const layerItem = document.createElement('div');
             layerItem.className = 'layer-item';
             layerItem.setAttribute('data-id', obj.id);
             
             layerItem.innerHTML = `
-                <div class="layer-thumb">
-                    <i class="fas fa-image"></i>
-                </div>
-                <div class="flex-grow-1">
-                    <div class="fw-bold">Imagem ${index}</div>
-                    <small class="text-muted">${Math.round(obj.width)}x${Math.round(obj.height)}</small>
-                </div>
-                <div class="layer-actions">
-                    <button class="btn btn-sm btn-outline-danger delete-layer">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
+                <div class="layer-thumb">Img ${index}</div>
+                <div class="layer-name">Imagem ${index}</div>
+                <button class="delete-layer">×</button>
             `;
             
-            layerItem.addEventListener('click', () => {
-                // Remove a classe active de todos os itens
+            // Evento para selecionar a camada
+            layerItem.addEventListener('click', (e) => {
+                if(e.target.classList.contains('delete-layer')) return;
+                
+                // Remove a classe 'active' de todos os itens
                 document.querySelectorAll('.layer-item').forEach(item => {
                     item.classList.remove('active');
                 });
                 
-                // Adiciona a classe active ao item clicado
+                // Adiciona a classe 'active' ao item clicado
                 layerItem.classList.add('active');
                 
                 // Seleciona o objeto no canvas
                 canvas.setActiveObject(obj);
-                canvas.renderAll();
+                
+                // Se Auto Up estiver ativado, traz para frente
+                if(autoUpEnabled) {
+                    obj.bringToFront();
+                    canvas.renderAll();
+                }
             });
             
             // Evento para o botão de deletar
@@ -499,161 +168,41 @@
                 e.stopPropagation();
                 canvas.remove(obj);
                 layerItem.remove();
-                
-                // Remove o objeto da lista
-                const index = objetosNoCanvas.indexOf(obj);
-                if (index > -1) {
-                    objetosNoCanvas.splice(index, 1);
-                }
-                
-                // Se não houver mais camadas, mostra o placeholder
-                if (layersList.children.length === 0) {
-                    layersList.innerHTML = `
-                        <div class="text-center text-muted py-4">
-                            <i class="fas fa-layer-group fa-2x mb-2"></i>
-                            <p>Nenhuma camada adicionada</p>
-                        </div>
-                    `;
-                }
-                
-                canvas.renderAll();
             });
             
             layersList.appendChild(layerItem);
         }
 
-        // Evento para o botão de adicionar imagem
-        addImageBtn.addEventListener('click', () => {
-            fileInput.click();
+        // Evento para o botão Auto Up
+        autoUpButton.addEventListener('click', () => {
+            autoUpEnabled = !autoUpEnabled;
+            autoUpButton.textContent = autoUpEnabled ? 'Auto Up ON' : 'Auto Up OFF';
+            autoUpButton.style.background = autoUpEnabled ? '#4CAF50' : '#f44336';
         });
 
-        // Evento para o botão de adicionar camada
-        addLayerBtn.addEventListener('click', () => {
-            fileInput.click();
-        });
-
-        // Evento para o input de arquivo
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            loadImage(file);
-        });
-
-        // Evento para o botão Up (trazer para frente)
-        upButton.addEventListener('click', () => {
-            const objetoAtivo = canvas.getActiveObject();
-            if (objetoAtivo) {
-                objetoAtivo.bringToFront();
-                canvas.renderAll();
-            }
-        });
-
-        // Evento para o botão Down (enviar para trás)
-        downButton.addEventListener('click', () => {
-            const objetoAtivo = canvas.getActiveObject();
-            if (objetoAtivo) {
-                objetoAtivo.sendToBack();
-                canvas.renderAll();
-            }
-        });
-
-        // Evento para o botão Finalizar (download)
-        downloadButton.addEventListener('click', () => {
-            // Cria um link temporário para download
-            const link = document.createElement('a');
-            link.download = 'foto-editada.png';
-            link.href = canvas.toDataURL({
-                format: 'png',
-                quality: 0.8
-            });
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-
-        // Evento para o botão de rotação
-        rotateBtn.addEventListener('click', () => {
-            const objetoAtivo = canvas.getActiveObject();
-            if (objetoAtivo) {
-                objetoAtivo.rotate(objetoAtivo.angle + 15);
-                canvas.renderAll();
-            }
-        });
-
-        // Evento para o botão de inverter horizontalmente
-        flipHBtn.addEventListener('click', () => {
-            const objetoAtivo = canvas.getActiveObject();
-            if (objetoAtivo) {
-                objetoAtivo.set('flipX', !objetoAtivo.flipX);
-                canvas.renderAll();
-            }
-        });
-
-        // Evento para o botão de inverter verticalmente
-        flipVBtn.addEventListener('click', () => {
-            const objetoAtivo = canvas.getActiveObject();
-            if (objetoAtivo) {
-                objetoAtivo.set('flipY', !objetoAtivo.flipY);
-                canvas.renderAll();
-            }
-        });
-
-        // Evento para o botão de resetar
-        resetBtn.addEventListener('click', () => {
-            if (confirm('Tem certeza que deseja resetar o canvas? Todas as alterações serão perdidas.')) {
-                canvas.clear();
-                objetosNoCanvas = [];
-                layersList.innerHTML = `
-                    <div class="text-center text-muted py-4">
-                        <i class="fas fa-layer-group fa-2x mb-2"></i>
-                        <p>Nenhuma camada adicionada</p>
-                    </div>
-                `;
-                upButton.disabled = true;
-                downButton.disabled = true;
-                downloadButton.disabled = true;
-            }
-        });
-
-        // Atualiza o objeto selecionado quando o usuário interage com o canvas
+        // Evento quando um objeto é selecionado no canvas
         canvas.on('selection:created', (e) => {
-            objetoSelecionado = e.selected[0];
+            const selectedObj = e.selected[0];
             
             // Atualiza a seleção na lista de camadas
             document.querySelectorAll('.layer-item').forEach(item => {
                 item.classList.remove('active');
-                if (item.getAttribute('data-id') === objetoSelecionado.id) {
+                if(item.getAttribute('data-id') === selectedObj.id) {
                     item.classList.add('active');
                 }
             });
-        });
-
-        canvas.on('selection:updated', (e) => {
-            objetoSelecionado = e.selected[0];
-        });
-
-        canvas.on('selection:cleared', (e) => {
-            objetoSelecionado = null;
             
-            // Remove a seleção de todas as camadas
-            document.querySelectorAll('.layer-item').forEach(item => {
-                item.classList.remove('active');
-            });
+            // Se Auto Up estiver ativado, traz para frente
+            if(autoUpEnabled && selectedObj) {
+                selectedObj.bringToFront();
+                canvas.renderAll();
+            }
         });
 
-        // Controles para mobile
-        document.getElementById('mobileAddBtn').addEventListener('click', () => {
-            fileInput.click();
-        });
-
-        document.getElementById('mobileDownloadBtn').addEventListener('click', () => {
-            downloadButton.click();
-        });
-
-        // Inicialização
-        upButton.disabled = true;
-        downButton.disabled = true;
-        downloadButton.disabled = true;
+        // Adiciona imagens de exemplo (substitua por seu próprio mecanismo de upload)
+        addImageToCanvas('https://via.placeholder.com/200x150/FF6B6B/white?text=Img1');
+        addImageToCanvas('https://via.placeholder.com/200x150/4ECDC4/white?text=Img2');
+        addImageToCanvas('https://via.placeholder.com/200x150/45B7D1/white?text=Img3');
     </script>
 </body>
 </html>
