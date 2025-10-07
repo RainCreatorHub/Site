@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Fotos Simples</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        #buttonContainer {
+            margin: 15px 0;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #camera {
+            border: 2px dashed #ccc;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        #fileInput {
+            display: none;
+        }
+        .file-label {
+            background-color: #008CBA;
+            display: inline-block;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            color: white;
+            margin: 4px 8px;
+        }
+        .instructions {
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Editor de Fotos</h1>
+        
+        <div id="buttonContainer">
+            <input type="file" id="fileInput" accept="image/*">
+            <label for="fileInput" class="file-label">Importar Imagem</label>
+            
+            <button id="upButton" disabled>Up</button>
+            <button id="downloadButton" disabled>Finalizar</button>
+        </div>
+
+        <div style="text-align: center;">
+            <canvas id="camera" width="800" height="500"></canvas>
+            <p class="instructions">Arraste para mover | Use as alças para redimensionar e girar</p>
+        </div>
+    </div>
+
+    <script>
+        // Inicializa o canvas do Fabric
+        const canvas = new fabric.Canvas('camera');
+        let objetosNoCanvas = [];
+        let objetoSelecionado = null;
+
+        // Referências aos elementos do DOM
+        const fileInput = document.getElementById('fileInput');
+        const upButton = document.getElementById('upButton');
+        const downloadButton = document.getElementById('downloadButton');
+
+        // Evento para carregar imagem
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                fabric.Image.fromURL(event.target.result, (img) => {
+                    // Define um ID único e posição para a nova imagem
+                    img.set({
+                        left: 100 + (objetosNoCanvas.length * 20),
+                        top: 100 + (objetosNoCanvas.length * 20),
+                        angle: 0,
+                        id: `imagem_${Date.now()}`
+                    });
+
+                    // Adiciona a imagem ao canvas
+                    canvas.add(img);
+                    objetosNoCanvas.push(img);
+                    
+                    // Ativa os botões
+                    upButton.disabled = false;
+                    downloadButton.disabled = false;
+
+                    canvas.renderAll();
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Evento para o botão Up (trazer para frente)
+        upButton.addEventListener('click', () => {
+            const objetoAtivo = canvas.getActiveObject();
+            if (objetoAtivo) {
+                objetoAtivo.bringToFront();
+                canvas.renderAll();
+            }
+        });
+
+        // Evento para o botão Finalizar (download)
+        downloadButton.addEventListener('click', () => {
+            // Cria um link temporário para download
+            const link = document.createElement('a');
+            link.download = 'foto-editada.png';
+            link.href = canvas.toDataURL({
+                format: 'png',
+                quality: 0.8
+            });
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Atualiza o objeto selecionado quando o usuário interage com o canvas
+        canvas.on('selection:created', (e) => {
+            objetoSelecionado = e.selected[0];
+        });
+
+        canvas.on('selection:updated', (e) => {
+            objetoSelecionado = e.selected[0];
+        });
+
+        canvas.on('selection:cleared', (e) => {
+            objetoSelecionado = null;
+        });
+    </script>
+</body>
+</html>
