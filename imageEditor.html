@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Editor de Fotos - Mobile Dark</title>
+    <title>Editor de Fotos - Totalmente Responsivo</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -29,31 +29,35 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background-color: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
-            min-height: 100vh;
-            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
             padding-bottom: env(safe-area-inset-bottom);
         }
 
         /* Header */
         .header {
             background-color: var(--bg-secondary);
-            padding: 15px;
+            padding: clamp(12px, 3vw, 18px);
             box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .header h1 {
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 4vw, 1.4rem);
             font-weight: 600;
         }
 
@@ -61,11 +65,19 @@
             background: none;
             border: none;
             color: var(--text-primary);
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 3.5vw, 1.3rem);
             cursor: pointer;
-            padding: 8px;
+            padding: clamp(6px, 1.5vw, 10px);
             border-radius: 50%;
             background-color: var(--bg-tertiary);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
         }
 
         /* Canvas Area */
@@ -74,29 +86,33 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 15px;
-            min-height: 50vh;
+            padding: clamp(10px, 2.5vw, 20px);
+            flex: 1;
+            min-height: 0; /* Important for flexbox to work properly */
             position: relative;
         }
 
         #main-canvas {
             background-color: var(--bg-secondary);
-            border-radius: 8px;
+            border-radius: clamp(6px, 1.5vw, 10px);
             box-shadow: var(--shadow);
+            width: 100%;
+            height: 100%;
             max-width: 100%;
+            max-height: 100%;
             touch-action: none;
+            object-fit: contain;
         }
 
         /* Mobile Controls */
         .mobile-controls {
             background-color: var(--bg-secondary);
             border-top: 1px solid var(--border-color);
-            padding: 15px 10px;
-            position: sticky;
-            bottom: 0;
+            padding: clamp(10px, 2.5vw, 15px) clamp(8px, 2vw, 12px);
             display: flex;
             justify-content: space-around;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .control-btn {
@@ -106,13 +122,13 @@
             background: none;
             border: none;
             color: var(--text-secondary);
-            font-size: 0.75rem;
+            font-size: clamp(0.65rem, 2.5vw, 0.85rem);
             cursor: pointer;
-            padding: 8px 5px;
-            border-radius: 8px;
+            padding: clamp(6px, 1.5vw, 10px) clamp(4px, 1vw, 6px);
+            border-radius: clamp(6px, 1.5vw, 10px);
             transition: all 0.2s ease;
             flex: 1;
-            max-width: 70px;
+            max-width: clamp(60px, 20vw, 80px);
         }
 
         .control-btn:active {
@@ -126,8 +142,8 @@
         }
 
         .control-btn i {
-            font-size: 1.2rem;
-            margin-bottom: 4px;
+            font-size: clamp(1rem, 4vw, 1.4rem);
+            margin-bottom: clamp(2px, 0.5vw, 4px);
         }
 
         /* Layers Panel */
@@ -138,43 +154,47 @@
             overflow: hidden;
             transition: max-height 0.3s ease-out;
             position: fixed;
-            bottom: 70px;
+            bottom: 0;
             left: 0;
             right: 0;
             z-index: 90;
+            display: flex;
+            flex-direction: column;
         }
 
         .layers-panel.active {
-            max-height: 50vh;
-            overflow-y: auto;
+            max-height: 60vh;
         }
 
         .panel-header {
-            padding: 12px 15px;
+            padding: clamp(10px, 2.5vw, 15px);
             background-color: var(--bg-tertiary);
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
         }
 
         .panel-title {
             font-weight: 600;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
         }
 
         .layers-list {
-            padding: 10px;
+            padding: clamp(8px, 2vw, 12px);
+            overflow-y: auto;
+            flex: 1;
         }
 
         .layer-item {
             display: flex;
             align-items: center;
-            padding: 12px 10px;
+            padding: clamp(10px, 2.5vw, 14px) clamp(8px, 2vw, 12px);
             border-bottom: 1px solid var(--border-color);
             background-color: var(--bg-card);
-            margin-bottom: 8px;
-            border-radius: 8px;
+            margin-bottom: clamp(6px, 1.5vw, 10px);
+            border-radius: clamp(6px, 1.5vw, 10px);
             cursor: grab;
             transition: transform 0.2s, background-color 0.2s;
             user-select: none;
@@ -192,17 +212,18 @@
         }
 
         .layer-thumb {
-            width: 50px;
-            height: 50px;
-            border-radius: 6px;
+            width: clamp(40px, 10vw, 55px);
+            height: clamp(40px, 10vw, 55px);
+            border-radius: clamp(4px, 1vw, 6px);
             background-color: var(--bg-tertiary);
-            margin-right: 12px;
+            margin-right: clamp(8px, 2vw, 12px);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
             color: var(--text-secondary);
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .layer-thumb img {
@@ -213,21 +234,27 @@
 
         .layer-info {
             flex-grow: 1;
+            min-width: 0; /* Allow text truncation */
         }
 
         .layer-name {
             font-weight: 500;
-            margin-bottom: 4px;
+            margin-bottom: clamp(2px, 0.5vw, 4px);
+            font-size: clamp(0.85rem, 3vw, 1rem);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .layer-size {
-            font-size: 0.75rem;
+            font-size: clamp(0.65rem, 2.5vw, 0.8rem);
             color: var(--text-secondary);
         }
 
         .layer-actions {
             display: flex;
-            gap: 8px;
+            gap: clamp(6px, 1.5vw, 10px);
+            flex-shrink: 0;
         }
 
         .action-btn {
@@ -235,9 +262,9 @@
             border: none;
             color: var(--text-secondary);
             cursor: pointer;
-            padding: 6px;
-            border-radius: 4px;
-            font-size: 0.9rem;
+            padding: clamp(4px, 1vw, 6px);
+            border-radius: clamp(3px, 0.75vw, 5px);
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
         }
 
         .action-btn:active {
@@ -252,7 +279,7 @@
         .drop-indicator {
             height: 3px;
             background-color: var(--accent-color);
-            margin: 5px 0;
+            margin: clamp(3px, 0.75vw, 5px) 0;
             border-radius: 2px;
             opacity: 0;
             transition: opacity 0.2s;
@@ -270,13 +297,16 @@
             transform: translateX(-50%) translateY(-20px);
             background-color: var(--bg-card);
             color: var(--text-primary);
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: clamp(10px, 2.5vw, 14px) clamp(15px, 3.5vw, 20px);
+            border-radius: clamp(6px, 1.5vw, 10px);
             box-shadow: var(--shadow);
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.3s, transform 0.3s;
             pointer-events: none;
+            font-size: clamp(0.8rem, 3vw, 1rem);
+            max-width: 90%;
+            text-align: center;
         }
 
         .toast.show {
@@ -287,25 +317,34 @@
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 30px 20px;
+            padding: clamp(20px, 5vw, 30px) clamp(15px, 3.5vw, 20px);
             color: var(--text-secondary);
         }
 
         .empty-state i {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: clamp(1.5rem, 6vw, 2.5rem);
+            margin-bottom: clamp(8px, 2vw, 12px);
             opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: clamp(0.8rem, 3vw, 1rem);
         }
 
         /* Drag Handle */
         .drag-handle {
             color: var(--text-secondary);
-            margin-right: 10px;
+            margin-right: clamp(6px, 1.5vw, 10px);
             cursor: grab;
+            flex-shrink: 0;
         }
 
         .drag-handle:active {
             cursor: grabbing;
+        }
+
+        .drag-handle i {
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
         }
 
         /* Scrollbar Styling */
@@ -321,6 +360,69 @@
             background: var(--bg-tertiary);
             border-radius: 3px;
         }
+
+        /* Landscape Orientation Adjustments */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .main-content {
+                flex-direction: row;
+            }
+            
+            .canvas-container {
+                flex: 2;
+            }
+            
+            .mobile-controls {
+                flex-direction: column;
+                justify-content: space-around;
+                width: clamp(70px, 15vw, 90px);
+                border-top: none;
+                border-left: 1px solid var(--border-color);
+            }
+            
+            .control-btn {
+                max-width: none;
+                width: 100%;
+                flex-direction: row;
+                justify-content: center;
+                padding: clamp(8px, 2vw, 12px);
+            }
+            
+            .control-btn i {
+                margin-bottom: 0;
+                margin-right: clamp(4px, 1vw, 6px);
+            }
+            
+            .layers-panel.active {
+                max-height: 80vh;
+            }
+        }
+
+        /* Very Small Screens */
+        @media (max-width: 320px) {
+            .layer-item {
+                padding: 8px;
+            }
+            
+            .layer-thumb {
+                width: 35px;
+                height: 35px;
+                margin-right: 8px;
+            }
+            
+            .control-btn {
+                padding: 5px 3px;
+            }
+        }
+
+        /* Large Screens */
+        @media (min-width: 768px) {
+            body {
+                max-width: 768px;
+                margin: 0 auto;
+                border-left: 1px solid var(--border-color);
+                border-right: 1px solid var(--border-color);
+            }
+        }
     </style>
 </head>
 <body>
@@ -331,8 +433,29 @@
         </button>
     </div>
 
-    <div class="canvas-container">
-        <canvas id="main-canvas" width="400" height="400"></canvas>
+    <div class="main-content">
+        <div class="canvas-container">
+            <canvas id="main-canvas"></canvas>
+        </div>
+
+        <div class="mobile-controls">
+            <button class="control-btn" id="addImageBtn">
+                <i class="fas fa-image"></i>
+                <span>Adicionar</span>
+            </button>
+            <button class="control-btn" id="layersBtn">
+                <i class="fas fa-layer-group"></i>
+                <span>Camadas</span>
+            </button>
+            <button class="control-btn" id="transformBtn">
+                <i class="fas fa-expand-alt"></i>
+                <span>Transformar</span>
+            </button>
+            <button class="control-btn" id="downloadBtn">
+                <i class="fas fa-download"></i>
+                <span>Baixar</span>
+            </button>
+        </div>
     </div>
 
     <div class="layers-panel" id="layersPanel">
@@ -350,25 +473,6 @@
         </div>
     </div>
 
-    <div class="mobile-controls">
-        <button class="control-btn" id="addImageBtn">
-            <i class="fas fa-image"></i>
-            <span>Adicionar</span>
-        </button>
-        <button class="control-btn" id="layersBtn">
-            <i class="fas fa-layer-group"></i>
-            <span>Camadas</span>
-        </button>
-        <button class="control-btn" id="transformBtn">
-            <i class="fas fa-expand-alt"></i>
-            <span>Transformar</span>
-        </button>
-        <button class="control-btn" id="downloadBtn">
-            <i class="fas fa-download"></i>
-            <span>Baixar</span>
-        </button>
-    </div>
-
     <div class="toast" id="toast"></div>
 
     <input type="file" id="fileInput" accept="image/*" style="display: none;">
@@ -383,20 +487,41 @@
             selectionLineWidth: 2
         });
         
-        // Ajustar canvas para mobile
+        // Ajustar canvas para qualquer tamanho de tela
         function resizeCanvas() {
             const container = document.querySelector('.canvas-container');
-            const size = Math.min(container.clientWidth - 30, 400);
+            const width = container.clientWidth - (parseFloat(getComputedStyle(container).padding) * 2);
+            const height = container.clientHeight - (parseFloat(getComputedStyle(container).padding) * 2);
+            
+            // Usar o menor dimensão para manter proporção quadrada
+            const size = Math.min(width, height);
+            
             canvas.setDimensions({
                 width: size,
                 height: size
             });
+            
+            // Ajustar objetos existentes se necessário
+            const objects = canvas.getObjects();
+            if (objects.length > 0) {
+                const scaleFactor = size / Math.max(canvas.getWidth(), canvas.getHeight());
+                objects.forEach(obj => {
+                    obj.scaleX *= scaleFactor;
+                    obj.scaleY *= scaleFactor;
+                    obj.left *= scaleFactor;
+                    obj.top *= scaleFactor;
+                    obj.setCoords();
+                });
+            }
+            
             canvas.renderAll();
         }
         
+        // Observar mudanças de tamanho da tela
         window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
+        const resizeObserver = new ResizeObserver(resizeCanvas);
+        resizeObserver.observe(document.querySelector('.canvas-container'));
+        
         // Estado da aplicação
         let layerCount = 0;
         let isDraggingLayer = false;
@@ -453,17 +578,17 @@
                     layerCount++;
                     
                     // Calcula o scale para a imagem caber no canvas
-                    const maxWidth = canvas.getWidth() * 0.7;
-                    const maxHeight = canvas.getHeight() * 0.7;
+                    const canvasSize = canvas.getWidth();
+                    const maxSize = canvasSize * 0.7;
                     let scale = 1;
                     
-                    if (img.width > maxWidth || img.height > maxHeight) {
-                        scale = Math.min(maxWidth / img.width, maxHeight / img.height);
+                    if (img.width > maxSize || img.height > maxSize) {
+                        scale = Math.min(maxSize / img.width, maxSize / img.height);
                     }
                     
                     img.set({
-                        left: canvas.getWidth() / 2,
-                        top: canvas.getHeight() / 2,
+                        left: canvasSize / 2,
+                        top: canvasSize / 2,
                         angle: 0,
                         scaleX: scale,
                         scaleY: scale,
@@ -472,7 +597,7 @@
                         id: `layer_${layerCount}`,
                         cornerStyle: 'circle',
                         cornerColor: '#4cc9f0',
-                        cornerSize: 12,
+                        cornerSize: Math.max(8, canvasSize * 0.03), // Tamanho relativo
                         transparentCorners: false,
                         hasControls: true,
                         hasBorders: true
@@ -517,24 +642,25 @@
             // Cria uma imagem em miniatura
             const img = new Image();
             img.onload = function() {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = 50;
-                canvas.height = 50;
+                const thumbCanvas = document.createElement('canvas');
+                const ctx = thumbCanvas.getContext('2d');
+                const thumbSize = thumbnail.clientWidth || 50;
+                thumbCanvas.width = thumbSize;
+                thumbCanvas.height = thumbSize;
                 
                 // Calcula dimensões para manter a proporção
-                const ratio = Math.min(50 / this.width, 50 / this.height);
+                const ratio = Math.min(thumbSize / this.width, thumbSize / this.height);
                 const width = this.width * ratio;
                 const height = this.height * ratio;
-                const x = (50 - width) / 2;
-                const y = (50 - height) / 2;
+                const x = (thumbSize - width) / 2;
+                const y = (thumbSize - height) / 2;
                 
                 ctx.fillStyle = '#2d2d2d';
-                ctx.fillRect(0, 0, 50, 50);
+                ctx.fillRect(0, 0, thumbSize, thumbSize);
                 ctx.drawImage(this, x, y, width, height);
                 
                 thumbnail.innerHTML = '';
-                thumbnail.appendChild(canvas);
+                thumbnail.appendChild(thumbCanvas);
             };
             img.src = obj.toDataURL({ format: 'png', quality: 0.1 });
             
@@ -709,7 +835,7 @@
             });
         });
 
-        // Download da imagem com fundo transparente e sem contorno
+        // Download da imagem com fundo transparente
         downloadBtn.addEventListener('click', () => {
             if (canvas.getObjects().length === 0) {
                 showToast('Adicione uma imagem primeiro!');
@@ -782,6 +908,7 @@
 
         // Inicialização
         canvas.setBackgroundColor('#1e1e1e', canvas.renderAll.bind(canvas));
+        resizeCanvas(); // Chamar uma vez para inicializar
     </script>
 </body>
 </html>
