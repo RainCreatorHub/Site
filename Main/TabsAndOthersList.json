@@ -15,6 +15,13 @@
               "description": "Script OP mas com key",
               "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua\", true))()",
               "key": "Ainda pegando."
+            },
+            {
+              "label": "Voidware",
+              "modalId": "voidware",
+              "modalTitle": "Voidware { OP }",
+              "description": "Script OP sem key",
+              "code": "loadstring(game:HttpGet('https://raw.githubusercontent.com/VapeVoidware/VW-Add/main/nightsintheforest.lua', true))()"
             }
           ]
         },
