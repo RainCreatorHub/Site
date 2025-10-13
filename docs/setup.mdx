@@ -1,0 +1,115 @@
+# Configuração do Projeto
+
+Este guia te ajudará a configurar o AI Docs em seu ambiente local.
+
+## Pré-requisitos
+
+Antes de começar, certifique-se de ter instalado:
+
+- **Node.js** 18.0 ou superior
+- **npm** ou **yarn**
+- **Git** para controle de versão
+
+<Callout type="warning">
+Recomendamos usar Node.js 18+ para melhor compatibilidade com Next.js 14.
+</Callout>
+
+## Instalação
+
+### 1. Clone o Repositório
+
+```bash
+git clone https://github.com/seu-usuario/ai-docs.git
+cd ai-docs
+```
+
+### 2. Instale as Dependências
+
+```bash
+npm install
+# ou
+yarn install
+```
+
+### 3. Execute o Projeto
+
+```bash
+npm run dev
+# ou
+yarn dev
+```
+
+Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
+
+## Estrutura do Projeto
+
+```
+ai-docs/
+├── app/                    # App Router do Next.js
+│   ├── layout.tsx         # Layout principal
+│   ├── page.tsx           # Página inicial
+│   └── globals.css        # Estilos globais
+├── components/            # Componentes React
+│   ├── Navigation.tsx     # Navegação principal
+│   ├── Hero.tsx          # Seção hero
+│   └── ...
+├── docs/                 # Documentação MDX
+│   ├── introduction.mdx  # Página de introdução
+│   ├── setup.mdx        # Esta página
+│   └── ...
+├── next.config.js        # Configuração do Next.js
+├── tailwind.config.js    # Configuração do Tailwind
+└── mdx-components.tsx    # Componentes MDX customizados
+```
+
+## Configuração do MDX
+
+O projeto está configurado para usar MDX com Next.js. Os arquivos `.mdx` na pasta `docs/` são automaticamente processados.
+
+### Componentes Disponíveis
+
+Você pode usar estes componentes em seus arquivos MDX:
+
+- `<Callout>` - Para alertas e avisos
+- `<Card>` - Para destacar conteúdo
+- `<CodeBlock>` - Para blocos de código
+
+Exemplo:
+
+```mdx
+<Callout type="info">
+Este é um callout informativo!
+</Callout>
+
+<Card title="Exemplo">
+Conteúdo do card aqui.
+</Card>
+```
+
+## Personalização
+
+### Tema
+
+O tema pode ser personalizado editando `tailwind.config.js`:
+
+```javascript
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          // Suas cores personalizadas
+        }
+      }
+    }
+  }
+}
+```
+
+### Componentes
+
+Adicione novos componentes em `components/` e registre-os em `mdx-components.tsx`.
+
+<Card title="Próximo Passo">
+Agora que você tem o projeto configurado, vamos aprender a [escrever documentação](/docs/writing)!
+</Card>
