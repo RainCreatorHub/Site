@@ -1,0 +1,326 @@
+# API Reference
+
+Documentação completa da API do AI Docs.
+
+## Visão Geral
+
+A API do AI Docs fornece endpoints para gerenciar documentação, buscar conteúdo e interagir com recursos de IA.
+
+<Callout type="info">
+**Base URL**: `https://api.ai-docs.com/v1`
+</Callout>
+
+## Autenticação
+
+Todos os endpoints requerem autenticação via Bearer Token:
+
+```http
+Authorization: Bearer seu_token_aqui
+```
+
+<Callout type="warning">
+Mantenha seu token seguro e nunca o exponha em código cliente.
+</Callout>
+
+## Endpoints
+
+### Documentos
+
+#### GET /documents
+
+Lista todos os documentos disponíveis.
+
+**Parâmetros de Query:**
+- `limit` (opcional): Número máximo de documentos (padrão: 20)
+- `offset` (opcional): Número de documentos para pular (padrão: 0)
+- `search` (opcional): Termo de busca
+- `category` (opcional): Filtrar por categoria
+
+**Exemplo de Requisição:**
+```bash
+curl -H "Authorization: Bearer seu_token" \
+     "https://api.ai-docs.com/v1/documents?limit=10&search=react"
+```
+
+**Resposta:**
+```json
+{
+  "documents": [
+    {
+      "id": "doc_123",
+      "title": "Introdução ao React",
+      "slug": "introducao-react",
+      "category": "frontend",
+      "created_at": "2024-01-15T10:30:00Z",
+      "updated_at": "2024-01-20T14:45:00Z",
+      "excerpt": "Aprenda os conceitos básicos do React..."
+    }
+  ],
+  "total": 150,
+  "has_more": true
+}
+```
+
+#### GET /documents/{id}
+
+Retorna um documento específico.
+
+**Parâmetros:**
+- `id`: ID único do documento
+
+**Exemplo de Requisição:**
+```bash
+curl -H "Authorization: Bearer seu_token" \
+     "https://api.ai-docs.com/v1/documents/doc_123"
+```
+
+**Resposta:**
+```json
+{
+  "id": "doc_123",
+  "title": "Introdução ao React",
+  "slug": "introducao-react",
+  "content": "# Introdução ao React\n\nReact é uma biblioteca...",
+  "category": "frontend",
+  "tags": ["react", "javascript", "frontend"],
+  "created_at": "2024-01-15T10:30:00Z",
+  "updated_at": "2024-01-20T14:45:00Z",
+  "author": {
+    "id": "user_456",
+    "name": "João Silva",
+    "email": "joao@exemplo.com"
+  }
+}
+```
+
+#### POST /documents
+
+Cria um novo documento.
+
+**Body:**
+```json
+{
+  "title": "Título do Documento",
+  "content": "# Conteúdo em MDX\n\nEste é o conteúdo...",
+  "category": "frontend",
+  "tags": ["react", "tutorial"]
+}
+```
+
+**Resposta:**
+```json
+{
+  "id": "doc_789",
+  "title": "Título do Documento",
+  "slug": "titulo-do-documento",
+  "content": "# Conteúdo em MDX\n\nEste é o conteúdo...",
+  "category": "frontend",
+  "tags": ["react", "tutorial"],
+  "created_at": "2024-01-21T09:15:00Z",
+  "updated_at": "2024-01-21T09:15:00Z"
+}
+```
+
+### Busca
+
+#### GET /search
+
+Busca inteligente em documentos usando IA.
+
+**Parâmetros de Query:**
+- `q`: Termo de busca (obrigatório)
+- `limit` (opcional): Número máximo de resultados (padrão: 10)
+- `category` (opcional): Filtrar por categoria
+
+**Exemplo de Requisição:**
+```bash
+curl -H "Authorization: Bearer seu_token" \
+     "https://api.ai-docs.com/v1/search?q=como usar hooks no react"
+```
+
+**Resposta:**
+```json
+{
+  "query": "como usar hooks no react",
+  "results": [
+    {
+      "id": "doc_123",
+      "title": "Hooks do React",
+      "slug": "hooks-react",
+      "excerpt": "Os hooks são uma funcionalidade...",
+      "relevance_score": 0.95,
+      "matched_sections": [
+        {
+          "heading": "useState Hook",
+          "content": "O useState permite adicionar estado..."
+        }
+      ]
+    }
+  ],
+  "total": 5,
+  "suggestions": [
+    "useEffect hook",
+    "custom hooks",
+    "react state management"
+  ]
+}
+```
+
+### Categorias
+
+#### GET /categories
+
+Lista todas as categorias disponíveis.
+
+**Resposta:**
+```json
+{
+  "categories": [
+    {
+      "id": "frontend",
+      "name": "Frontend",
+      "description": "Tecnologias de interface",
+      "document_count": 45
+    },
+    {
+      "id": "backend",
+      "name": "Backend",
+      "description": "Tecnologias de servidor",
+      "document_count": 32
+    }
+  ]
+}
+```
+
+## Códigos de Status
+
+| Código | Descrição |
+|--------|-----------|
+| 200 | Sucesso |
+| 201 | Criado com sucesso |
+| 400 | Requisição inválida |
+| 401 | Não autorizado |
+| 403 | Acesso negado |
+| 404 | Recurso não encontrado |
+| 429 | Muitas requisições |
+| 500 | Erro interno do servidor |
+
+## Rate Limiting
+
+<Callout type="warning">
+A API tem limite de 1000 requisições por hora por token.
+</Callout>
+
+**Headers de Rate Limit:**
+```
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1640995200
+```
+
+## Exemplos de Uso
+
+### JavaScript/Node.js
+
+```javascript
+const API_BASE = 'https://api.ai-docs.com/v1';
+const TOKEN = 'seu_token_aqui';
+
+// Buscar documentos
+async function buscarDocumentos(termo) {
+  const response = await fetch(`${API_BASE}/search?q=${encodeURIComponent(termo)}`, {
+    headers: {
+      'Authorization': `Bearer ${TOKEN}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  
+  return await response.json();
+}
+
+// Criar documento
+async function criarDocumento(dados) {
+  const response = await fetch(`${API_BASE}/documents`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${TOKEN}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(dados)
+  });
+  
+  return await response.json();
+}
+```
+
+### Python
+
+```python
+import requests
+
+API_BASE = 'https://api.ai-docs.com/v1'
+TOKEN = 'seu_token_aqui'
+
+headers = {
+    'Authorization': f'Bearer {TOKEN}',
+    'Content-Type': 'application/json'
+}
+
+# Buscar documentos
+def buscar_documentos(termo):
+    response = requests.get(
+        f'{API_BASE}/search',
+        params={'q': termo},
+        headers=headers
+    )
+    return response.json()
+
+# Criar documento
+def criar_documento(dados):
+    response = requests.post(
+        f'{API_BASE}/documents',
+        json=dados,
+        headers=headers
+    )
+    return response.json()
+```
+
+### cURL
+
+```bash
+# Buscar documentos
+curl -H "Authorization: Bearer seu_token" \
+     -H "Content-Type: application/json" \
+     "https://api.ai-docs.com/v1/search?q=react"
+
+# Criar documento
+curl -X POST \
+     -H "Authorization: Bearer seu_token" \
+     -H "Content-Type: application/json" \
+     -d '{"title":"Meu Documento","content":"# Conteúdo"}' \
+     "https://api.ai-docs.com/v1/documents"
+```
+
+## Webhooks
+
+O AI Docs suporta webhooks para notificações em tempo real.
+
+### Eventos Disponíveis
+
+- `document.created` - Documento criado
+- `document.updated` - Documento atualizado
+- `document.deleted` - Documento deletado
+
+### Configuração
+
+```json
+{
+  "url": "https://seu-site.com/webhook",
+  "events": ["document.created", "document.updated"],
+  "secret": "seu_webhook_secret"
+}
+```
+
+<Card title="Suporte">
+Para dúvidas sobre a API, entre em contato através do email: api@ai-docs.com
+</Card>

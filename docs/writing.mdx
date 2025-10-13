@@ -1,0 +1,242 @@
+# Escrevendo Documentação
+
+Aprenda como escrever documentação eficaz usando MDX no AI Docs.
+
+## Sintaxe MDX
+
+O MDX combina Markdown com JSX, permitindo usar componentes React diretamente na documentação.
+
+### Markdown Básico
+
+```markdown
+# Título Principal
+## Subtítulo
+### Título Menor
+
+**Texto em negrito** e *texto em itálico*
+
+- Lista com marcadores
+- Segundo item
+- Terceiro item
+
+1. Lista numerada
+2. Segundo item
+3. Terceiro item
+
+[Link para exemplo](https://exemplo.com)
+```
+
+### Blocos de Código
+
+Use três acentos graves para blocos de código:
+
+````markdown
+```javascript
+function saudacao(nome) {
+  return `Olá, ${nome}!`;
+}
+
+console.log(saudacao('Mundo'));
+```
+````
+
+### Tabelas
+
+```markdown
+| Coluna 1 | Coluna 2 | Coluna 3 |
+|----------|----------|----------|
+| Dados 1  | Dados 2  | Dados 3  |
+| Dados 4  | Dados 5  | Dados 6  |
+```
+
+## Componentes Disponíveis
+
+### Callout
+
+Use para destacar informações importantes:
+
+```mdx
+<Callout type="info">
+Informação importante aqui.
+</Callout>
+
+<Callout type="warning">
+Atenção! Isso é um aviso.
+</Callout>
+
+<Callout type="error">
+Erro crítico encontrado.
+</Callout>
+
+<Callout type="success">
+Operação realizada com sucesso!
+</Callout>
+```
+
+### Card
+
+Para organizar conteúdo em cards:
+
+```mdx
+<Card title="Título do Card">
+Conteúdo do card aqui. Pode incluir texto, listas, 
+código e outros elementos.
+</Card>
+
+<Card>
+Card sem título, apenas com conteúdo.
+</Card>
+```
+
+## Boas Práticas
+
+### 1. Estrutura Hierárquica
+
+Use títulos para criar uma hierarquia clara:
+
+```markdown
+# Título Principal (H1)
+## Seção Principal (H2)
+### Subseção (H3)
+#### Detalhes (H4)
+```
+
+### 2. Links Internos
+
+Use links relativos para navegar entre páginas:
+
+```markdown
+[Voltar para Introdução](/docs/introduction)
+[Próxima Seção: Componentes](/docs/components)
+```
+
+### 3. Imagens
+
+```markdown
+![Texto alternativo](/caminho/para/imagem.png)
+```
+
+### 4. Código Inline
+
+Use acentos graves para código inline:
+
+```markdown
+Use a função `console.log()` para debugar.
+```
+
+## Exemplos Práticos
+
+### Documentação de API
+
+```mdx
+# API Reference
+
+## GET /api/users
+
+Retorna uma lista de usuários.
+
+### Parâmetros
+
+<Card>
+- `limit` (opcional): Número máximo de usuários (padrão: 10)
+- `offset` (opcional): Número de usuários para pular (padrão: 0)
+</Card>
+
+### Resposta
+
+```json
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "João Silva",
+      "email": "joao@exemplo.com"
+    }
+  ],
+  "total": 100
+}
+```
+
+<Callout type="info">
+Esta API requer autenticação. Inclua o token no header `Authorization`.
+</Callout>
+```
+
+### Guia de Instalação
+
+```mdx
+# Instalação
+
+## Método 1: npm
+
+```bash
+npm install ai-docs
+```
+
+## Método 2: yarn
+
+```bash
+yarn add ai-docs
+```
+
+<Card title="Nota">
+Recomendamos usar npm para melhor compatibilidade.
+</Card>
+
+## Verificação
+
+Após a instalação, verifique se tudo está funcionando:
+
+```javascript
+import { AIDocs } from 'ai-docs';
+
+const docs = new AIDocs();
+console.log(docs.version); // '1.0.0'
+```
+```
+
+## Dicas Avançadas
+
+### 1. Componentes Customizados
+
+Você pode criar componentes personalizados e usá-los em MDX:
+
+```jsx
+// components/MyComponent.tsx
+export function MyComponent({ children }) {
+  return <div className="my-custom-component">{children}</div>
+}
+```
+
+```mdx
+import { MyComponent } from '@/components/MyComponent'
+
+<MyComponent>
+Conteúdo personalizado aqui!
+</MyComponent>
+```
+
+### 2. Imports Dinâmicos
+
+```mdx
+import { useState } from 'react'
+
+export function Counter() {
+  const [count, setCount] = useState(0)
+  
+  return (
+    <div>
+      <p>Contador: {count}</p>
+      <button onClick={() => setCount(count + 1)}>
+        Incrementar
+      </button>
+    </div>
+  )
+}
+
+<Counter />
+```
+
+<Card title="Próximo Passo">
+Agora que você sabe escrever documentação, explore os [componentes disponíveis](/docs/components)!
+</Card>

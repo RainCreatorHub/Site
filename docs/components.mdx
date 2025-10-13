@@ -1,0 +1,233 @@
+# Componentes Disponíveis
+
+Explore todos os componentes disponíveis para usar em sua documentação MDX.
+
+## Callout
+
+Componente para destacar informações importantes com diferentes tipos.
+
+### Tipos Disponíveis
+
+<Callout type="info">
+**Info**: Para informações gerais e dicas úteis.
+</Callout>
+
+<Callout type="warning">
+**Warning**: Para avisos e precauções importantes.
+</Callout>
+
+<Callout type="error">
+**Error**: Para erros críticos e problemas que precisam de atenção.
+</Callout>
+
+<Callout type="success">
+**Success**: Para confirmações e sucessos de operações.
+</Callout>
+
+### Uso
+
+```mdx
+<Callout type="info">
+Este é um callout informativo!
+</Callout>
+
+<Callout type="warning">
+Atenção! Esta é uma operação irreversível.
+</Callout>
+```
+
+## Card
+
+Componente para organizar conteúdo em cards elegantes.
+
+### Card com Título
+
+<Card title="Exemplo de Card">
+Este é um card com título. Perfeito para destacar seções específicas 
+de conteúdo ou agrupar informações relacionadas.
+</Card>
+
+### Card sem Título
+
+<Card>
+Este é um card sem título. Útil para conteúdo mais simples ou 
+quando o título não é necessário.
+</Card>
+
+### Uso
+
+```mdx
+<Card title="Título do Card">
+Conteúdo do card aqui.
+</Card>
+
+<Card>
+Card sem título.
+</Card>
+```
+
+## CodeBlock
+
+Blocos de código com syntax highlighting e funcionalidade de copiar.
+
+### Exemplo JavaScript
+
+```javascript
+function saudacao(nome) {
+  return `Olá, ${nome}!`;
+}
+
+const usuario = 'Mundo';
+console.log(saudacao(usuario));
+```
+
+### Exemplo Python
+
+```python
+def saudacao(nome):
+    return f"Olá, {nome}!"
+
+usuario = "Mundo"
+print(saudacao(usuario))
+```
+
+### Exemplo CSS
+
+```css
+.btn-primary {
+  background-color: #0ea5e9;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.btn-primary:hover {
+  background-color: #0284c7;
+}
+```
+
+## Elementos HTML Customizados
+
+### Títulos
+
+Os títulos são automaticamente estilizados:
+
+# H1 - Título Principal
+## H2 - Subtítulo
+### H3 - Seção
+#### H4 - Subseção
+##### H5 - Detalhes
+###### H6 - Menor
+
+### Parágrafos
+
+Parágrafos com espaçamento adequado e tipografia otimizada para leitura.
+
+### Listas
+
+#### Lista com Marcadores
+- Primeiro item
+- Segundo item
+  - Subitem 1
+  - Subitem 2
+- Terceiro item
+
+#### Lista Numerada
+1. Primeiro passo
+2. Segundo passo
+3. Terceiro passo
+
+### Links
+
+[Link externo](https://exemplo.com) e [link interno](/docs/introduction)
+
+### Código Inline
+
+Use `console.log()` para debugar seu código.
+
+### Citações
+
+> Esta é uma citação em bloco. Útil para destacar 
+> citações importantes ou referências.
+
+## Exemplos de Uso Combinado
+
+### Documentação de API
+
+<Card title="GET /api/users">
+Retorna uma lista de usuários do sistema.
+
+<Callout type="info">
+Esta API requer autenticação. Inclua o token no header `Authorization`.
+</Callout>
+
+**Parâmetros:**
+- `limit` (opcional): Número máximo de usuários
+- `offset` (opcional): Número de usuários para pular
+
+**Exemplo de Resposta:**
+
+```json
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "João Silva",
+      "email": "joao@exemplo.com"
+    }
+  ],
+  "total": 100
+}
+```
+</Card>
+
+### Guia de Instalação
+
+<Callout type="warning">
+Certifique-se de ter Node.js 18+ instalado antes de prosseguir.
+</Callout>
+
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/exemplo/ai-docs.git
+   ```
+
+2. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
+
+3. **Execute o projeto:**
+   ```bash
+   npm run dev
+   ```
+
+<Card title="Verificação">
+Abra [http://localhost:3000](http://localhost:3000) para verificar se tudo está funcionando.
+</Card>
+
+## Personalização
+
+### Adicionando Novos Componentes
+
+Para adicionar novos componentes, crie-os em `components/` e registre em `mdx-components.tsx`:
+
+```typescript
+// mdx-components.tsx
+import { MyNewComponent } from '@/components/MyNewComponent'
+
+export function useMDXComponents(components: MDXComponents): MDXComponents {
+  return {
+    ...components,
+    MyNewComponent,
+  }
+}
+```
+
+### Estilização
+
+Os componentes usam Tailwind CSS. Personalize os estilos editando `tailwind.config.js` ou adicionando classes customizadas.
+
+<Callout type="success">
+Agora você conhece todos os componentes disponíveis! Comece a criar sua documentação.
+</Callout>
